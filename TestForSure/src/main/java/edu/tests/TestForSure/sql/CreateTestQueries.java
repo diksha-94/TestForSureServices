@@ -82,4 +82,32 @@ public class CreateTestQueries {
 		String getquestion = "SELECT * FROM questions WHERE id = '" + id + "'AND test_id = '" + test_id + "'";
 		return getquestion;
 	}
+	
+	public static String getTestDetailsQueryBuilder(int categoryId, int subCatId) {
+		String getTestDetails = "SELECT * FROM testdetails WHERE cat_id = '" + categoryId + "'AND subcat_id = '" + subCatId + "'";
+		return getTestDetails;
+	}
+	public static String getTestDetailsQueryBuilder() {
+		String getTestDetails = "SELECT * FROM testdetails";
+		return getTestDetails;
+	}
+	public static String getTestDetailsQueryBuilder(int categoryId) {
+		String getTestDetails = "SELECT * FROM testdetails WHERE cat_id = '" + categoryId + "'";
+		return getTestDetails;
+	}
+	
+	public static String getQuestionsQueryBuilder(int test_id) {
+		String getTestDetails = "SELECT * FROM questions WHERE test_id = '" + test_id + "'";
+		return getTestDetails;
+	}
+	
+	public static String addNewExamCategory(String category) {
+		String addCategory = "INSERT into examcategory (category) values ('" + category +"')";
+		return addCategory;
+	}
+	
+	public static String addNewExamSubcategory(int cat_id, String subcategory) {
+		String addSubcategory = "INSERT into examsubcategory (cat_id, subcategory) values ('" + cat_id +"', '"+ subcategory+"')";
+		return addSubcategory;
+	}
 }

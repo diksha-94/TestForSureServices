@@ -24,6 +24,10 @@ public class ExamCategory {
 		this.id = id;
 		this.category = category;
 	}
+	public ExamCategory(String category) {
+		super();
+		this.category = category;
+	}
 	public ExamCategory() {
 		super();
 	}

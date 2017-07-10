@@ -7,8 +7,11 @@ import edu.tests.TestForSure.entity.ExamCategory;
 import edu.tests.TestForSure.entity.ExamSubcategory;
 import edu.tests.TestForSure.entity.Question;
 import edu.tests.TestForSure.entity.TestDetails;
+import edu.tests.TestForSure.response.CommonResponse;
 import edu.tests.TestForSure.response.GetCategoryResponse;
+import edu.tests.TestForSure.response.GetQuestionsResponse;
 import edu.tests.TestForSure.response.GetSubcategoryResponse;
+import edu.tests.TestForSure.response.GetTestDetailsResponse;
 import edu.tests.TestForSure.sql.CreateTestQueries;
 
 public class TestDAO {
@@ -145,6 +148,164 @@ public class TestDAO {
 			System.out.println("Exception from DAO : "+e.getMessage());
 			return 0;
 		}
+	}
+	public static GetTestDetailsResponse getTestDetails(int categoryId, int subCatId){
+		System.out.println("Calling DAO");
+		GetTestDetailsResponse response = new GetTestDetailsResponse();
+		Connection conn = DBConnection.getDBConnection();
+		String query = "";
+		if(categoryId == 0) {
+			if(subCatId!=0) {
+				response.setStatus(false);
+				response.setMessage("Please select the test category as well when subcategory is specified");
+				return response;
+			}
+			else if(subCatId==0){
+				query = CreateTestQueries.getTestDetailsQueryBuilder();
+			}
+		}
+		else if(categoryId != 0){
+			if(subCatId == 0){
+				query = CreateTestQueries.getTestDetailsQueryBuilder(categoryId);
+			}
+			else if(subCatId != 0){
+				query = CreateTestQueries.getTestDetailsQueryBuilder(categoryId, subCatId);
+			}
+		}
+		
+		System.out.println("Query: "+query);
+		ResultSet rs = null;
+		ArrayList<TestDetails> list = new ArrayList<TestDetails>();
+		try{
+			Statement statement = conn.createStatement();
+			rs = statement.executeQuery(query);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					TestDetails testDetails = new TestDetails();
+					testDetails.setId(rs.getInt(1));
+					testDetails.setCat_id(rs.getInt(2));
+					testDetails.setSubcat_id(rs.getInt(3));
+					testDetails.setTestTitle(rs.getString(4));
+					testDetails.setNo_of_ques(rs.getInt(5));
+					testDetails.setTime_limit(rs.getInt(6));
+					testDetails.setCorrect_ques_marks(rs.getInt(7));
+					testDetails.setNegative_marks(rs.getInt(8));
+					
+					list.add(testDetails);
+				}
+				response.setTestDetails(list);
+				response.setStatus(true);
+				response.setMessage("");
+			}
+			else{
+				response.setStatus(false);
+				response.setMessage("No tests found");
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+		}
+		return response;
+	}
+	
+	public static GetQuestionsResponse getQuestions(int test_id){
+		System.out.println("Calling DAO");
+		GetQuestionsResponse response = new GetQuestionsResponse();
+		Connection conn = DBConnection.getDBConnection();
+		String query = CreateTestQueries.getQuestionsQueryBuilder(test_id);
+		
+		System.out.println("Query: "+query);
+		ResultSet rs = null;
+		ArrayList<Question> list = new ArrayList<Question>();
+		try{
+			Statement statement = conn.createStatement();
+			rs = statement.executeQuery(query);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					Question question = new Question();
+					question.setId(rs.getInt(1));
+					question.setTest_id(rs.getInt(2));
+					question.setQues_type(rs.getString(3));
+					question.setParagraph_text(rs.getString(4));
+					question.setQues_text(rs.getString(5));
+					question.setOptionA(rs.getString(6));
+					question.setOptionB(rs.getString(7));
+					question.setOptionC(rs.getString(8));
+					question.setOptionD(rs.getString(7));
+					question.setCorrect_option(rs.getString(8));
+					question.setExplanation(rs.getString(7));
+					
+					list.add(question);
+				}
+				response.setQuestion(list);
+				response.setStatus(true);
+				response.setMessage("");
+			}
+			else{
+				response.setStatus(false);
+				response.setMessage("No questions found");
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+		}
+		return response;
+	}
+	
+	public static CommonResponse addnewCategory(String category){
+		System.out.println("Calling DAO");
+		CommonResponse response = new CommonResponse();
+		Connection conn = DBConnection.getDBConnection();
+		String query = CreateTestQueries.addNewExamCategory(category);
+		
+		System.out.println("Query: "+query);
+		int result = 0;
+		try{
+			Statement statement = conn.createStatement();
+			result = statement.executeUpdate(query);
+			if(result>0){
+				response.setStatus(true);
+				response.setMessage("New Exam Category added successfully");
+			}
+			else{
+				response.setStatus(false);
+				response.setMessage("Error in adding exam category");
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+		}
+		return response;
+	}
+	
+	public static CommonResponse addnewSubcategory(int cat_id, String subcategory){
+		System.out.println("Calling DAO");
+		CommonResponse response = new CommonResponse();
+		Connection conn = DBConnection.getDBConnection();
+		String query = CreateTestQueries.addNewExamSubcategory(cat_id, subcategory);
+		
+		System.out.println("Query: "+query);
+		int result = 0;
+		try{
+			Statement statement = conn.createStatement();
+			result = statement.executeUpdate(query);
+			if(result>0){
+				response.setStatus(true);
+				response.setMessage("New Exam Subcategory added successfully");
+			}
+			else{
+				response.setStatus(false);
+				response.setMessage("Error in adding exam subcategory");
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+		}
+		return response;
 	}
 	
 }

@@ -10,12 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.tests.TestForSure.datalayer.TestDAO;
 import edu.tests.TestForSure.entity.TestDetailsRequest;
 import edu.tests.TestForSure.entity.ExamCategory;
+import edu.tests.TestForSure.entity.ExamSubcategory;
 import edu.tests.TestForSure.entity.Question;
 import edu.tests.TestForSure.entity.TestDetails;
 import edu.tests.TestForSure.response.AddQuestionResponse;
+import edu.tests.TestForSure.response.CommonResponse;
 import edu.tests.TestForSure.response.CreateTestResponse;
 import edu.tests.TestForSure.response.GetCategoryResponse;
+import edu.tests.TestForSure.response.GetQuestionsResponse;
 import edu.tests.TestForSure.response.GetSubcategoryResponse;
+import edu.tests.TestForSure.response.GetTestDetailsResponse;
 
 @CrossOrigin
 @RestController
@@ -90,5 +94,69 @@ public class TestServices {
 		return response;
 	}
 	
+	@RequestMapping(method = {RequestMethod.GET}, value = "/get-tests")
+	public GetTestDetailsResponse getTestDetails( @RequestParam(value = "categoryId") int categoryId,
+												  @RequestParam(value = "subCatId") int subCatId){
+		System.out.println("Calling get tests service");
+		System.out.println("CategoryId: "+categoryId+"---subCatId: "+subCatId);
+		
+		GetTestDetailsResponse response = null;
+		
+		try{
+			response = TestDAO.getTestDetails(categoryId, subCatId);
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+		}
+		return response;
+	}
+	
+	@RequestMapping(method = {RequestMethod.GET}, value = "/get-questions")
+	public GetQuestionsResponse getTestDetails( @RequestParam(value = "test_id") int test_id){
+		System.out.println("Calling get questions service");
+		System.out.println("TestId: "+test_id);
+		
+		GetQuestionsResponse response = null;
+		
+		try{
+			response = TestDAO.getQuestions(test_id);
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+		}
+		return response;
+	}
+	
+	@RequestMapping(method = {RequestMethod.POST}, value = "/add-category")
+	public CommonResponse addNewTestCategory(@RequestBody ExamCategory examCategory){
+		System.out.println("Calling get add category service");
+		System.out.println("Exam category: "+examCategory);
+		
+		CommonResponse response = null;
+		
+		try{
+			response = TestDAO.addnewCategory(examCategory.getCategory());
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+		}
+		return response;
+	}
+	
+	@RequestMapping(method = {RequestMethod.POST}, value = "/add-subcategory")
+	public CommonResponse addNewTestSubcategory(@RequestBody ExamSubcategory examSubcategory){
+		System.out.println("Calling get add category service");
+		System.out.println("Exam subcategory: "+examSubcategory);
+		
+		CommonResponse response = null;
+		
+		try{
+			response = TestDAO.addnewSubcategory(examSubcategory.getCat_id(), examSubcategory.getSubcategory());
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+		}
+		return response;
+	}
 	
 }
