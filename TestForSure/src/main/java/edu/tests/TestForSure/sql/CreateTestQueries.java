@@ -96,8 +96,21 @@ public class CreateTestQueries {
 		return getTestDetails;
 	}
 	
+	public static String getTestDetailsByStatusQueryBuilder(int categoryId, int subCatId) {
+		String getTestDetails = "SELECT * FROM testdetails WHERE cat_id = '" + categoryId + "'AND subcat_id = '" + subCatId + "'AND active = 'true'";
+		return getTestDetails;
+	}
+	public static String getTestDetailsByStatusQueryBuilder() {
+		String getTestDetails = "SELECT * FROM testdetails WHERE active = 'true'";
+		return getTestDetails;
+	}
+	public static String getTestDetailsByStatusQueryBuilder(int categoryId) {
+		String getTestDetails = "SELECT * FROM testdetails WHERE cat_id = '" + categoryId + "'AND active = 'true'";
+		return getTestDetails;
+	}
+	
 	public static String getQuestionsQueryBuilder(int test_id) {
-		String getTestDetails = "SELECT * FROM questions WHERE test_id = '" + test_id + "'";
+		String getTestDetails = "SELECT * FROM questions WHERE test_id = '" + test_id + "' AND active = 'true'";
 		return getTestDetails;
 	}
 	
@@ -109,5 +122,32 @@ public class CreateTestQueries {
 	public static String addNewExamSubcategory(int cat_id, String subcategory) {
 		String addSubcategory = "INSERT into examsubcategory (cat_id, subcategory) values ('" + cat_id +"', '"+ subcategory+"')";
 		return addSubcategory;
+	}
+	
+	public static String deleteQuestion(int id, int test_id) {
+		String deleteQuestion = "UPDATE questions SET active = 'false' WHERE id = '"+ id +"' AND test_id = '" + test_id+"'";
+		return deleteQuestion;
+	}
+	
+	public static String getPublishTestQueryBuilder(int test_id) {
+		String publishTest = "UPDATE testdetails SET active = 'true ' WHERE id = '" + test_id + "'";
+		return publishTest;
+	}
+	
+	public static String getUnpublishTestQueryBuilder(int test_id) {
+		String unpublishTest = "UPDATE testdetails SET active = 'false ' WHERE id = '" + test_id + "'";
+		return unpublishTest;
+	}
+	public static String getTestDetailsByTestIdQueryBuilder(int testId) {
+		String getTestDetails = "SELECT * FROM testdetails WHERE id = '" + testId + "'";
+		return getTestDetails;
+	}
+	public static String getCategoryByIdQueryBuilder(int id) {
+		String getCategory = "SELECT category FROM examcategory WHERE id = '" + id + "'";
+		return getCategory;
+	}
+	public static String getSubcategoryByIdQueryBuilder(int id) {
+		String getSubcategory = "SELECT subcategory FROM examsubcategory WHERE id = '" + id + "'";
+		return getSubcategory;
 	}
 }

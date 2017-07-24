@@ -9,6 +9,7 @@ public class TestDetails {
 	private int time_limit;
 	private int correct_ques_marks;
 	private int negative_marks;
+	private Boolean active;
 	public int getId() {
 		return id;
 	}
@@ -57,14 +58,20 @@ public class TestDetails {
 	public void setNegative_marks(int negative_marks) {
 		this.negative_marks = negative_marks;
 	}
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 	@Override
 	public String toString() {
 		return "TestDetails [id=" + id + ", cat_id=" + cat_id + ", subcat_id=" + subcat_id + ", testTitle=" + testTitle
 				+ ", no_of_ques=" + no_of_ques + ", time_limit=" + time_limit + ", correct_ques_marks="
-				+ correct_ques_marks + ", negative_marks=" + negative_marks + "]";
+				+ correct_ques_marks + ", negative_marks=" + negative_marks + ", active=" + active + "]";
 	}
 	public TestDetails(int id, int cat_id, int subcat_id, String testTitle, int no_of_ques, int time_limit,
-			int correct_ques_marks, int negative_marks) {
+			int correct_ques_marks, int negative_marks, Boolean active) {
 		super();
 		this.id = id;
 		this.cat_id = cat_id;
@@ -74,6 +81,7 @@ public class TestDetails {
 		this.time_limit = time_limit;
 		this.correct_ques_marks = correct_ques_marks;
 		this.negative_marks = negative_marks;
+		this.active = active;
 	}
 	public TestDetails(){
 		super();

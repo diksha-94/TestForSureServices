@@ -18,6 +18,7 @@ import edu.tests.TestForSure.response.CommonResponse;
 import edu.tests.TestForSure.response.CreateTestResponse;
 import edu.tests.TestForSure.response.GetCategoryResponse;
 import edu.tests.TestForSure.response.GetQuestionsResponse;
+import edu.tests.TestForSure.response.GetSingleTestDetailsResponse;
 import edu.tests.TestForSure.response.GetSubcategoryResponse;
 import edu.tests.TestForSure.response.GetTestDetailsResponse;
 
@@ -111,6 +112,40 @@ public class TestServices {
 		return response;
 	}
 	
+	@RequestMapping(method = {RequestMethod.GET}, value = "/get-tests-bystatus")
+	public GetTestDetailsResponse getTestDetailsByStatus( @RequestParam(value = "categoryId") int categoryId,
+												  @RequestParam(value = "subCatId") int subCatId){
+		System.out.println("Calling get tests service");
+		System.out.println("CategoryId: "+categoryId+"---subCatId: "+subCatId);
+		
+		GetTestDetailsResponse response = null;
+		
+		try{
+			response = TestDAO.getTestDetailsByStatus(categoryId, subCatId);
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+		}
+		return response;
+	}
+	
+	//get test details by test id
+	@RequestMapping(method = {RequestMethod.GET}, value = "/get-testsbyId")
+	public GetSingleTestDetailsResponse getTestDetailsByTestId( @RequestParam(value = "testId") int testId){
+		System.out.println("Calling get tests service");
+		System.out.println("TestId: "+testId);
+		
+		GetSingleTestDetailsResponse response = null;
+		
+		try{
+			response = TestDAO.getTestDetails(testId);
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+		}
+		return response;
+	}
+	
 	@RequestMapping(method = {RequestMethod.GET}, value = "/get-questions")
 	public GetQuestionsResponse getTestDetails( @RequestParam(value = "test_id") int test_id){
 		System.out.println("Calling get questions service");
@@ -159,4 +194,51 @@ public class TestServices {
 		return response;
 	}
 	
+	@RequestMapping(method = {RequestMethod.PUT}, value = "/delete-question")
+	public CommonResponse deleteQuestion(@RequestBody Question question){
+		System.out.println("Calling delete question service");
+		System.out.println("Question: "+question);
+		
+		CommonResponse response = null;
+		
+		try{
+			response = TestDAO.deleteQuestion(question.getId(), question.getTest_id());
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+		}
+		return response;
+	}
+	
+	@RequestMapping(method = {RequestMethod.PUT}, value = "/publish-test")
+	public CommonResponse publishTest(@RequestParam(value="test_id") int test_id){
+		System.out.println("Calling publish test service");
+		System.out.println("Test_id: "+test_id);
+		
+		CommonResponse response = null;
+		
+		try{
+			response = TestDAO.publishTest(test_id);
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+		}
+		return response;
+	}
+	
+	@RequestMapping(method = {RequestMethod.PUT}, value = "/unpublish-test")
+	public CommonResponse unpublishTest(@RequestParam(value="test_id") int test_id){
+		System.out.println("Calling unpublish test service");
+		System.out.println("Test_id: "+test_id);
+		
+		CommonResponse response = null;
+		
+		try{
+			response = TestDAO.unpublishTest(test_id);
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+		}
+		return response;
+	}
 }
