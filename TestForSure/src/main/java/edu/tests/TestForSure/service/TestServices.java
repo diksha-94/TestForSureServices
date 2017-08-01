@@ -1,5 +1,7 @@
 package edu.tests.TestForSure.service;
 
+import java.util.ArrayList;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,7 @@ import edu.tests.TestForSure.datalayer.TestDAO;
 import edu.tests.TestForSure.entity.TestDetailsRequest;
 import edu.tests.TestForSure.entity.ExamCategory;
 import edu.tests.TestForSure.entity.ExamSubcategory;
+import edu.tests.TestForSure.entity.GetTestResultRequest;
 import edu.tests.TestForSure.entity.Question;
 import edu.tests.TestForSure.entity.TestDetails;
 import edu.tests.TestForSure.response.AddQuestionResponse;
@@ -21,6 +24,8 @@ import edu.tests.TestForSure.response.GetQuestionsResponse;
 import edu.tests.TestForSure.response.GetSingleTestDetailsResponse;
 import edu.tests.TestForSure.response.GetSubcategoryResponse;
 import edu.tests.TestForSure.response.GetTestDetailsResponse;
+import edu.tests.TestForSure.response.QuestionDetail;
+import edu.tests.TestForSure.response.TestResultResponse;
 
 @CrossOrigin
 @RestController
@@ -240,5 +245,68 @@ public class TestServices {
 			System.out.println("Exception in service: "+e.getMessage());
 		}
 		return response;
+	}
+	
+	@RequestMapping(method = {RequestMethod.POST}, value = "/get-test-result")
+	public TestResultResponse getTestResult(@RequestBody GetTestResultRequest getTestResult){
+		System.out.println("Calling get test result");
+		System.out.println("Request Body: "+getTestResult);
+		CommonResponse commonResponse = new CommonResponse();
+		GetQuestionsResponse questionAnswers = null;
+		TestDetails testDetails = null;
+		TestResultResponse resultResponse = new TestResultResponse();
+		int test_id = getTestResult.getTestDetails().getTest_id();
+		try{
+			questionAnswers = TestDAO.getAnswers(test_id);
+			System.out.println("Question Answers: "+questionAnswers);
+			
+			testDetails = TestDAO.getTestDetailsByTestId(test_id);
+			System.out.println("Test Details: "+testDetails);
+			
+			//Generate Test Report
+			resultResponse = GeneralFunctionality.generateTestReport(getTestResult.getResult(), questionAnswers);
+			resultResponse.setTest_id(testDetails.getId());
+			resultResponse.setTotal_ques(testDetails.getNo_of_ques());
+			resultResponse.setTotal_marks(testDetails.getNo_of_ques()*testDetails.getCorrect_ques_marks());
+			int marksScored = (resultResponse.getCorrect_ques()*testDetails.getCorrect_ques_marks())-(resultResponse.getIncorrect_ques()*testDetails.getNegative_marks());
+			resultResponse.setMarks_scored(marksScored);
+			//Finding the candidate's rank
+			int rank = GeneralFunctionality.findCandidateRank(marksScored, test_id);
+			if(rank == 0){
+				System.out.println("Error in finding response");
+			}
+			else{
+				//Proceed further
+				resultResponse.setRank(rank);
+				
+				//Manage the rank of all the candidates
+				
+				CommonResponse response = GeneralFunctionality.manageAllCandidateRank(rank, test_id);
+				if(response.getStatus()){
+					//If rank successfully updated for all the candidates, add the current candidate's report to the database
+					CommonResponse response1 = GeneralFunctionality.saveTestReport(resultResponse, getTestResult.getUserDetails());
+					if(response1.getStatus()){
+						commonResponse.setStatus(true);
+						commonResponse.setMessage("Successfully get the test result and the report has been saved");
+						
+					}
+					else{
+						commonResponse.setStatus(false);
+						commonResponse.setMessage("Successfully get the test result but problem in saving the report ");
+					}
+				}
+			}
+			
+			
+			resultResponse.setCommon_response(commonResponse);
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+			commonResponse.setStatus(false);
+			commonResponse.setMessage(e.getMessage());
+			resultResponse.setCommon_response(commonResponse);
+		}
+		
+		return resultResponse;
 	}
 }

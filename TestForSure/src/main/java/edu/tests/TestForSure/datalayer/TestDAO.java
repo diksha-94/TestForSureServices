@@ -7,12 +7,15 @@ import edu.tests.TestForSure.entity.ExamCategory;
 import edu.tests.TestForSure.entity.ExamSubcategory;
 import edu.tests.TestForSure.entity.Question;
 import edu.tests.TestForSure.entity.TestDetails;
+import edu.tests.TestForSure.entity.UserDetails;
 import edu.tests.TestForSure.response.CommonResponse;
 import edu.tests.TestForSure.response.GetCategoryResponse;
 import edu.tests.TestForSure.response.GetQuestionsResponse;
 import edu.tests.TestForSure.response.GetSingleTestDetailsResponse;
 import edu.tests.TestForSure.response.GetSubcategoryResponse;
 import edu.tests.TestForSure.response.GetTestDetailsResponse;
+import edu.tests.TestForSure.response.QuestionDetail;
+import edu.tests.TestForSure.response.TestResultResponse;
 import edu.tests.TestForSure.sql.CreateTestQueries;
 
 public class TestDAO {
@@ -349,8 +352,7 @@ public class TestDAO {
 					question.setOptionB(rs.getString(7));
 					question.setOptionC(rs.getString(8));
 					question.setOptionD(rs.getString(9));
-					question.setCorrect_option(rs.getString(10));
-					question.setExplanation(rs.getString(11));
+					
 					
 					list.add(question);
 				}
@@ -500,6 +502,163 @@ public class TestDAO {
 				response.setStatus(false);
 				response.setMessage("Error in unpublishing test");
 			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+		}
+		return response;
+	}
+	
+	public static GetQuestionsResponse getAnswers(int test_id){
+		System.out.println("Calling DAO");
+		GetQuestionsResponse response = new GetQuestionsResponse();
+		Connection conn = DBConnection.getDBConnection();
+		String query = CreateTestQueries.getAnswersQueryBuilder(test_id);
+		ArrayList<Question> questionList = new ArrayList<Question>();
+		System.out.println("Query: "+query);
+		ResultSet rs = null;
+		try{
+			Statement statement = conn.createStatement();
+			rs = statement.executeQuery(query);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					Question question = new Question();
+					question.setId(rs.getInt(1));
+					question.setCorrect_option(rs.getString(2));
+					question.setExplanation(rs.getString(3));
+					questionList.add(question);
+				}
+				response.setQuestion(questionList);
+				response.setStatus(true);
+				response.setMessage("Success");
+			}
+			else{
+				response.setStatus(false);
+				response.setMessage("Not found");
+			}
+			
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+			
+		}
+		return response;
+	}
+	
+	public static TestDetails getTestDetailsByTestId(int testId){
+		System.out.println("Calling DAO");
+		GetTestDetailsResponse response = new GetTestDetailsResponse();
+		Connection conn = DBConnection.getDBConnection();
+		String query = "";
+		query = CreateTestQueries.testAlreadyExistsQueryBuilder(testId);
+		System.out.println("Query: "+query);
+		ResultSet rs = null;
+		TestDetails testDetails = new TestDetails();
+		try{
+			Statement statement = conn.createStatement();
+			rs = statement.executeQuery(query);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					testDetails.setId(rs.getInt(1));
+					testDetails.setCat_id(rs.getInt(2));
+					testDetails.setSubcat_id(rs.getInt(3));
+					testDetails.setTestTitle(rs.getString(4));
+					testDetails.setNo_of_ques(rs.getInt(5));
+					testDetails.setTime_limit(rs.getInt(6));
+					testDetails.setCorrect_ques_marks(rs.getInt(7));
+					testDetails.setNegative_marks(rs.getInt(8));
+					testDetails.setActive(rs.getBoolean(9));
+				}
+			}
+			else{
+				System.out.println("No test found");
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+		}
+		return testDetails;
+	}
+	
+	public static CommonResponse insertTestReport(TestResultResponse resultResponse, UserDetails userDetails){
+		System.out.println("Calling DAO");
+		CommonResponse response = new CommonResponse();
+		Connection conn = DBConnection.getDBConnection();
+		String query = "";
+		query = CreateTestQueries.insertTestReport(resultResponse, userDetails);
+		System.out.println("Query: "+query);
+		int result = 0;
+		try{
+			Statement statement = conn.createStatement();
+			result = statement.executeUpdate(query);
+			if(result>0){
+				response.setStatus(true);
+				response.setMessage("Test report for user "+userDetails.getUsername()+" added successfully");
+			}
+			else{
+				response.setStatus(false);
+				response.setMessage("Test report can't be added for the user "+userDetails.getUsername());
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+		}
+		return response;
+	}
+	
+	public static int findUserRank(int marks_scored, int test_id){
+		System.out.println("Calling DAO");
+		Connection conn = DBConnection.getDBConnection();
+		String query = "";
+		query = CreateTestQueries.findRank(marks_scored, test_id);
+		System.out.println("Query: "+query);
+		ResultSet rs = null;
+		int rank = 0;
+		try{
+			Statement statement = conn.createStatement();
+			rs = statement.executeQuery(query);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					rank++;
+				}
+				rank++;
+			}
+			else
+			{
+				rank = 1;
+			}
+			
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+			rank = 0;
+		}
+		return rank;
+	}
+	
+	public static CommonResponse manageAllUsersRank(int rank, int test_id){
+		System.out.println("Calling DAO");
+		Connection conn = DBConnection.getDBConnection();
+		String query = "";
+		query = CreateTestQueries.manageRankForAllUsers(rank, test_id);
+		System.out.println("Query: "+query);
+		int result = 0;
+		CommonResponse response = new CommonResponse();
+		try{
+			Statement statement = conn.createStatement();
+			result = statement.executeUpdate(query);
+			if(result > 0){
+				response.setStatus(true);
+				response.setMessage("Rank of all the candidates updated successfully");
+			}
+			response.setStatus(true);
+			response.setMessage("No need to update the rank");
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());

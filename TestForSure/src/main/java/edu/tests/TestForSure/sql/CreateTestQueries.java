@@ -2,6 +2,8 @@ package edu.tests.TestForSure.sql;
 
 import edu.tests.TestForSure.entity.Question;
 import edu.tests.TestForSure.entity.TestDetails;
+import edu.tests.TestForSure.entity.UserDetails;
+import edu.tests.TestForSure.response.TestResultResponse;
 
 public class CreateTestQueries {
 
@@ -110,7 +112,7 @@ public class CreateTestQueries {
 	}
 	
 	public static String getQuestionsQueryBuilder(int test_id) {
-		String getTestDetails = "SELECT * FROM questions WHERE test_id = '" + test_id + "' AND active = 'true'";
+		String getTestDetails = "SELECT id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD FROM questions WHERE test_id = '" + test_id + "' AND active = 'true'";
 		return getTestDetails;
 	}
 	
@@ -149,5 +151,25 @@ public class CreateTestQueries {
 	public static String getSubcategoryByIdQueryBuilder(int id) {
 		String getSubcategory = "SELECT subcategory FROM examsubcategory WHERE id = '" + id + "'";
 		return getSubcategory;
+	}
+	public static String getAnswersQueryBuilder(int test_id) {
+		String getAnswers = "SELECT id, correct_option, explanation FROM questions WHERE test_id = '" + test_id + "' AND active='true'";
+		return getAnswers;
+	}
+	
+	public static String insertTestReport(TestResultResponse resultResponse, UserDetails userDetails) {
+		String insertTestReport = "INSERT into testreports (test_id, username, emailid, mobile_number, marks_scored, time_taken, rank, questions_attempted, correct_ques, incorrect_ques) values ('"+
+					resultResponse.getTest_id() +"' , '" +userDetails.getUsername() + "' , '"+userDetails.getEmail() + "' , '"+userDetails.getMobile() + "' , '"+resultResponse.getMarks_scored() + "' , '"+
+					resultResponse.getTime_taken() + "' , '"+resultResponse.getRank() + "' , '"+resultResponse.getQues_attempted()+ "' , '"+resultResponse.getCorrect_ques()+ "' , '"+resultResponse.getIncorrect_ques() + "')";
+		return insertTestReport;
+	}
+	public static String findRank(int marks_scored, int test_id) {
+		String findRank = "SELECT id FROM testReports WHERE marks_scored >= '" + marks_scored + "' AND test_id = '" + test_id + "'";
+		return findRank;
+	}
+	
+	public static String manageRankForAllUsers(int rank, int test_id) {
+		String manageRank = "UPDATE testreports SET rank = rank+1 where rank >= '" + rank + "' AND test_id = '" + test_id + "' order by rank desc";
+		return manageRank;
 	}
 }

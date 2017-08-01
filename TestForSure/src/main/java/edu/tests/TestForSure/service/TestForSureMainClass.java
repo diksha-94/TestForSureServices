@@ -10,3 +10,4 @@ public class TestForSureMainClass {
 		SpringApplication.run(TestForSureMainClass.class, args);
 	}
 }
+
