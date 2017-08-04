@@ -13,6 +13,7 @@ public class TestResultResponse {
 	private int rank;
 	private int time_taken;
 	private int total_candidate;
+	private String username;
 	private ArrayList<QuestionDetail> question_details;
 	private CommonResponse common_response;
 	public int getTest_id() {
@@ -87,17 +88,24 @@ public class TestResultResponse {
 	public void setTotal_candidate(int total_candidate) {
 		this.total_candidate = total_candidate;
 	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	
 	@Override
 	public String toString() {
 		return "TestResultResponse [test_id=" + test_id + ", total_ques=" + total_ques + ", ques_attempted="
 				+ ques_attempted + ", correct_ques=" + correct_ques + ", incorrect_ques=" + incorrect_ques
 				+ ", total_marks=" + total_marks + ", marks_scored=" + marks_scored + ", rank=" + rank + ", time_taken=" + time_taken
-				+ ", question_details=" + question_details + ", common_response=" + common_response+ ", total_candidate=" + total_candidate + "]";
+				+ ", question_details=" + question_details + ", common_response=" + common_response+ ", total_candidate=" + total_candidate 
+				+ ", username=" + username + "]";
 	}
 	public TestResultResponse(int test_id, int total_ques, int ques_attempted, int correct_ques, int incorrect_ques,
 			int total_marks, int marks_scored, int rank, int time_taken, ArrayList<QuestionDetail> question_details, CommonResponse common_response,
-			int total_candidate) {
+			int total_candidate, String username) {
 		super();
 		this.test_id = test_id;
 		this.total_ques = total_ques;
@@ -111,6 +119,7 @@ public class TestResultResponse {
 		this.question_details = question_details;
 		this.common_response = common_response;
 		this.total_candidate = total_candidate;
+		this.username = username;
 	}
 	public TestResultResponse() {
 		super();

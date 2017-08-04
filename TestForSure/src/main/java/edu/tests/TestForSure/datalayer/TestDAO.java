@@ -668,4 +668,38 @@ public class TestDAO {
 		return response;
 	}
 	
+	public static int updateTotalCandidateTestDetails(int testId){
+		System.out.println("Calling DAO");
+		Connection conn = DBConnection.getDBConnection();
+		String query = "";
+		query = CreateTestQueries.updateTotalCandidates(testId);
+		System.out.println("Query: "+query);
+		int result = 0;
+		int total_candidate = -1;
+		ResultSet rs = null;
+		try{
+			Statement statement = conn.createStatement();
+			result = statement.executeUpdate(query);
+			if(result>0){
+				System.out.println("Total number of candidates attempted test with test id: "+testId+" updated successfully");
+				//If updated successfully, get the total number of candidates and return to service
+				query = CreateTestQueries.getTotalCandidates(testId);
+				rs = statement.executeQuery(query);
+				if(rs.isBeforeFirst()){
+					while(rs.next()){
+						total_candidate = rs.getInt(1);
+					}
+				}
+			}
+			else{
+				System.out.println("Error in updating the total number of candidates who attempted the test");
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+			
+		}
+		return total_candidate;
+	}
+	
 }

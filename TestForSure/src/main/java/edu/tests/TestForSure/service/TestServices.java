@@ -296,7 +296,15 @@ public class TestServices {
 					}
 				}
 			}
-			
+			int total_candidate = TestDAO.updateTotalCandidateTestDetails(test_id);
+			if(total_candidate!=-1){
+				System.out.println("Number of candidates updated successfully and the the number of candidates who have attempted the test is: "+total_candidate);
+			}
+			else{
+				System.out.println("Error in updated the total number of candidates");
+			}
+			resultResponse.setTotal_candidate(total_candidate);
+			resultResponse.setUsername(getTestResult.getUserDetails().getUsername());
 			
 			resultResponse.setCommon_response(commonResponse);
 		}

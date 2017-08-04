@@ -172,4 +172,14 @@ public class CreateTestQueries {
 		String manageRank = "UPDATE testreports SET rank = rank+1 where rank >= '" + rank + "' AND test_id = '" + test_id + "' order by rank desc";
 		return manageRank;
 	}
+	
+	public static String updateTotalCandidates(int test_id) {
+		String updateTotalCandidate = "UPDATE testdetails SET candidate_count = candidate_count+1 where id = '" + test_id + "'";
+		return updateTotalCandidate;
+	}
+	
+	public static String getTotalCandidates(int test_id) {
+		String getTotalCandidate = "SELECT candidate_count from testdetails where id = '" + test_id + "'";
+		return getTotalCandidate;
+	}
 }
