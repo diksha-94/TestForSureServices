@@ -20,7 +20,7 @@ public class AddQuestionResponse {
 	public int getQuestion_id() {
 		return question_id;
 	}
-	public void setTest_id(int question_id) {
+	public void setQuestion_id(int question_id) {
 		this.question_id = question_id;
 	}
 	@Override
