@@ -129,7 +129,7 @@ public class QuestionBankDAO {
 			result = statement.executeUpdate(query);
 			if(result>0){
 				response.setStatus(true);
-				query = CreateQuestionBankQueries.getLastInsertIdCategoryQueryBuilder();
+				query = CreateQuestionBankQueries.getLastInsertIdSubcategoryQueryBuilder();
 				ResultSet rs = statement.executeQuery(query);
 				int id = 0;
 				if(rs.isBeforeFirst()){

@@ -16,6 +16,7 @@ import edu.tests.TestForSure.response.GetSubcategoryResponse;
 import edu.tests.TestForSure.response.GetTestDetailsResponse;
 import edu.tests.TestForSure.response.QuestionDetail;
 import edu.tests.TestForSure.response.TestResultResponse;
+import edu.tests.TestForSure.sql.CreateQuestionBankQueries;
 import edu.tests.TestForSure.sql.CreateTestQueries;
 
 public class TestDAO {
@@ -290,12 +291,15 @@ public class TestDAO {
 					testDetails.setId(rs.getInt(1));
 					cat_id = rs.getInt(2);
 					subcat_id = rs.getInt(3);
+					testDetails.setCat_id(rs.getInt(2));
+					testDetails.setSubcat_id(rs.getInt(3));
 					testDetails.setTestTitle(rs.getString(4));
 					testDetails.setNo_of_ques(rs.getInt(5));
 					testDetails.setTime_limit(rs.getInt(6));
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
 					testDetails.setNegative_marks(rs.getInt(8));
 				}
+				
 				response.setTestDetails(testDetails);
 				query = CreateTestQueries.getCategoryByIdQueryBuilder(cat_id);
 				ResultSet category = statement.executeQuery(query);
@@ -352,7 +356,8 @@ public class TestDAO {
 					question.setOptionB(rs.getString(7));
 					question.setOptionC(rs.getString(8));
 					question.setOptionD(rs.getString(9));
-					
+					question.setCorrect_option(rs.getString(10));
+					question.setExplanation(rs.getString(11));
 					
 					list.add(question);
 				}
@@ -384,7 +389,16 @@ public class TestDAO {
 			result = statement.executeUpdate(query);
 			if(result>0){
 				response.setStatus(true);
-				response.setMessage("New Exam Category added successfully");
+				query = CreateTestQueries.getLastInsertIdCategoryQueryBuilder();
+				ResultSet rs = statement.executeQuery(query);
+				int id = 0;
+				if(rs.isBeforeFirst()){
+					while(rs.next()){
+						id = rs.getInt(1);
+					}
+				}
+				
+				response.setMessage("New exam Category added successfully-"+id);
 			}
 			else{
 				response.setStatus(false);
@@ -412,7 +426,16 @@ public class TestDAO {
 			result = statement.executeUpdate(query);
 			if(result>0){
 				response.setStatus(true);
-				response.setMessage("New Exam Subcategory added successfully");
+				query = CreateTestQueries.getLastInsertIdSubcategoryQueryBuilder();
+				ResultSet rs = statement.executeQuery(query);
+				int id = 0;
+				if(rs.isBeforeFirst()){
+					while(rs.next()){
+						id = rs.getInt(1);
+					}
+				}
+				
+				response.setMessage("New exam subcategory added successfully-"+id);
 			}
 			else{
 				response.setStatus(false);

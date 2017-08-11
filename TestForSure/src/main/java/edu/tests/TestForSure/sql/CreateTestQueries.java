@@ -112,7 +112,7 @@ public class CreateTestQueries {
 	}
 	
 	public static String getQuestionsQueryBuilder(int test_id) {
-		String getTestDetails = "SELECT id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD FROM questions WHERE test_id = '" + test_id + "' AND active = 'true'";
+		String getTestDetails = "SELECT id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation FROM questions WHERE test_id = '" + test_id + "' AND active = 'true'";
 		return getTestDetails;
 	}
 	
@@ -181,5 +181,14 @@ public class CreateTestQueries {
 	public static String getTotalCandidates(int test_id) {
 		String getTotalCandidate = "SELECT candidate_count from testdetails where id = '" + test_id + "'";
 		return getTotalCandidate;
+	}
+	public static String getLastInsertIdCategoryQueryBuilder(){
+		String last_insert_id = "select last_insert_id() as last_id from categorysubjectwise";
+		return last_insert_id;
+	}
+	
+	public static String getLastInsertIdSubcategoryQueryBuilder(){
+		String last_insert_id = "select last_insert_id() as last_id from subcategorysubjectwise";
+		return last_insert_id;
 	}
 }
