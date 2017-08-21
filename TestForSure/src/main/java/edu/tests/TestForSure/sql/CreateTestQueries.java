@@ -80,7 +80,11 @@ public class CreateTestQueries {
 				"', explanation = '"+question.getExplanation()+"' WHERE id= '"+question.getId()+"'AND test_id = '"+question.getTest_id()+"'";
 		return updateQuestion;
 	}
-	public static String questionAlreadyExistsQueryBuilder(int id, int test_id) {
+	public static String updateQuestionQueryBuilder(Boolean active, String id, int test_id) {
+		String updateQuestion = "UPDATE questions SET active = '"+active+"' WHERE id= '"+id+"'AND test_id = '"+test_id+"'";
+		return updateQuestion;
+	}
+	public static String questionAlreadyExistsQueryBuilder(String id, int test_id) {
 		String getquestion = "SELECT * FROM questions WHERE id = '" + id + "'AND test_id = '" + test_id + "'";
 		return getquestion;
 	}
@@ -126,7 +130,7 @@ public class CreateTestQueries {
 		return addSubcategory;
 	}
 	
-	public static String deleteQuestion(int id, int test_id) {
+	public static String deleteQuestion(String id, int test_id) {
 		String deleteQuestion = "UPDATE questions SET active = 'false' WHERE id = '"+ id +"' AND test_id = '" + test_id+"'";
 		return deleteQuestion;
 	}
@@ -190,5 +194,13 @@ public class CreateTestQueries {
 	public static String getLastInsertIdSubcategoryQueryBuilder(){
 		String last_insert_id = "select last_insert_id() as last_id from subcategorysubjectwise";
 		return last_insert_id;
+	}
+	public static String getTopPerformers(int test_id){
+		String query = "SELECT username,rank,marks_scored, time_taken FROM testreports WHERE test_id = '" + test_id + "' ORDER BY rank ASC LIMIT 10";
+		return query;
+	}
+	public static String getAverage(int test_id){
+		String query = "SELECT marks_scored, time_taken FROM testreports WHERE test_id = '" + test_id + "'";
+		return query;
 	}
 }

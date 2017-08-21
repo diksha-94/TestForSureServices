@@ -1,7 +1,7 @@
 package edu.tests.TestForSure.entity;
 
 public class Question {
-	private int id;
+	private String id;
 	private int test_id;
 	private String ques_type;
 	private String paragraph_text;
@@ -12,10 +12,10 @@ public class Question {
 	private String optionD;
 	private String correct_option;
 	private String explanation;
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public int getTest_id() {
@@ -85,7 +85,7 @@ public class Question {
 				+ ", optionC=" + optionC + ", optionD=" + optionD + ", correct_option=" + correct_option
 				+ ", explanation=" + explanation + "]";
 	}
-	public Question(int id, int test_id, String ques_type, String paragraph_text, String ques_text, String optionA,
+	public Question(String id, int test_id, String ques_type, String paragraph_text, String ques_text, String optionA,
 			String optionB, String optionC, String optionD, String correct_option, String explanation) {
 		super();
 		this.id = id;

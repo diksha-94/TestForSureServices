@@ -2,6 +2,8 @@ package edu.tests.TestForSure.response;
 
 import java.util.ArrayList;
 
+import edu.tests.TestForSure.entity.TopPerformers;
+
 public class TestResultResponse {
 	private int test_id;
 	private int total_ques;
@@ -13,9 +15,15 @@ public class TestResultResponse {
 	private int rank;
 	private int time_taken;
 	private int total_candidate;
+	private int topperScore;
+	private double topperTime;
+	private double avgScore;
+	private double avgTime;
 	private String username;
 	private ArrayList<QuestionDetail> question_details;
+	private ArrayList<TopPerformers> topPerformers;
 	private CommonResponse common_response;
+	
 	public int getTest_id() {
 		return test_id;
 	}
@@ -76,6 +84,12 @@ public class TestResultResponse {
 	public void setQuestion_details(ArrayList<QuestionDetail> question_details) {
 		this.question_details = question_details;
 	}
+	public ArrayList<TopPerformers> getTopPerformers() {
+		return topPerformers;
+	}
+	public void setTopPerformers(ArrayList<TopPerformers> topPerformers) {
+		this.topPerformers = topPerformers;
+	}
 	public CommonResponse getCommon_response() {
 		return common_response;
 	}
@@ -94,6 +108,30 @@ public class TestResultResponse {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	public int getTopperScore() {
+		return topperScore;
+	}
+	public void setTopperScore(int topperScore) {
+		this.topperScore = topperScore;
+	}
+	public double getTopperTime() {
+		return topperTime;
+	}
+	public void setTopperTime(double topperTime) {
+		this.topperTime = topperTime;
+	}
+	public double getAvgScore() {
+		return avgScore;
+	}
+	public void setAvgScore(double avgScore) {
+		this.avgScore = avgScore;
+	}
+	public double getAvgTime() {
+		return avgTime;
+	}
+	public void setAvgTime(double avgTime) {
+		this.avgTime = avgTime;
+	}
 	
 	@Override
 	public String toString() {
@@ -101,11 +139,12 @@ public class TestResultResponse {
 				+ ques_attempted + ", correct_ques=" + correct_ques + ", incorrect_ques=" + incorrect_ques
 				+ ", total_marks=" + total_marks + ", marks_scored=" + marks_scored + ", rank=" + rank + ", time_taken=" + time_taken
 				+ ", question_details=" + question_details + ", common_response=" + common_response+ ", total_candidate=" + total_candidate 
-				+ ", username=" + username + "]";
+				+ ", username=" + username + ",topperScore=" + topperScore + ", topperTime=" + topperTime + ", avgScore="
+				+ avgScore + ", avgTime=" + avgTime+ ",topPerformers=" + topPerformers + "]";
 	}
 	public TestResultResponse(int test_id, int total_ques, int ques_attempted, int correct_ques, int incorrect_ques,
 			int total_marks, int marks_scored, int rank, int time_taken, ArrayList<QuestionDetail> question_details, CommonResponse common_response,
-			int total_candidate, String username) {
+			int total_candidate, String username, int topperScore, double topperTime, double avgScore, double avgTime, ArrayList<TopPerformers> topPerformers) {
 		super();
 		this.test_id = test_id;
 		this.total_ques = total_ques;
@@ -120,6 +159,11 @@ public class TestResultResponse {
 		this.common_response = common_response;
 		this.total_candidate = total_candidate;
 		this.username = username;
+		this.topperScore = topperScore;
+		this.topperTime = topperTime;
+		this.avgScore = avgScore;
+		this.avgTime = avgTime;
+		this.topPerformers = topPerformers;
 	}
 	public TestResultResponse() {
 		super();

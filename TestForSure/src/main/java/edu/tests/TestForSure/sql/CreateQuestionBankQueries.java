@@ -5,8 +5,8 @@ import edu.tests.TestForSure.entity.QuestionBank;
 public class CreateQuestionBankQueries {
 
 	public static String insertQuestionBankQueryBuilder(QuestionBank question) {
-		String insertQuestion = "INSERT into questionbank (question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation, category_bank, subcategory_bank) values ('"+
-					question.getQuestion_type() + "' , '"+question.getParagraph_text() + "' , '"+question.getQuestion_text() + "' , '"+
+		String insertQuestion = "INSERT into questionbank (id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation, category_bank, subcategory_bank) values ('"+
+				question.getId() + "' , '"+question.getQuestion_type() + "' , '"+question.getParagraph_text() + "' , '"+question.getQuestion_text() + "' , '"+
 					question.getOptionA() + "' , '"+question.getOptionB() + "' , '"+question.getOptionC()+ "' , '"+question.getOptionD()+ "' , '"+
 					question.getCorrect_option()+ "' , '"+question.getExplanation()+ "' , '"+question.getCategory_id()+ "' , '"+question.getSubcategory_id() + "')";
 		return insertQuestion;
@@ -42,7 +42,7 @@ public class CreateQuestionBankQueries {
 		String getQuestion = "SELECT id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation, category_bank, subcategory_bank FROM questionbank WHERE category_bank = '" + category_id  + "' AND subcategory_bank = '" + subcategory_id + "' AND active = 'true'";
 		return getQuestion;
 	}
-	public static String deleteQuestionQueryBuilder(int id) {
+	public static String deleteQuestionQueryBuilder(String id) {
 		String deleteQuestion = "UPDATE questionbank SET active = 'false' WHERE id = '" + id  + "'";
 		return deleteQuestion;
 	}
@@ -54,6 +54,16 @@ public class CreateQuestionBankQueries {
 	
 	public static String getSubcategoryQueryBuilder(int cat_id) {
 		String getSubcategory = "SELECT id,subcategory from subcategorysubjectwise WHERE cat_id = "+cat_id;
+		return getSubcategory;
+	}
+	
+	public static String getCategoryNameQueryBuilder(int id) {
+		String getCategory = "SELECT category from categorysubjectwise where id="+id;
+		return getCategory;
+	}
+	
+	public static String getSubcategoryNameQueryBuilder(int id) {
+		String getSubcategory = "SELECT subcategory from subcategorysubjectwise WHERE id = "+id;
 		return getSubcategory;
 	}
 	
@@ -77,12 +87,12 @@ public class CreateQuestionBankQueries {
 		return last_insert_id;
 	}
 	
-	public static String insertQuestionFromQuestionBank(int question_id){
+	public static String insertQuestionFromQuestionBank(String question_id){
 		String insert_question = "insert into questions (id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation) select id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation from questionbank WHERE id='"+question_id+"'";
 		return insert_question;
 	}
 	
-	public static String updateTestIdToQuestionBank(int test_id, int question_id){
+	public static String updateTestIdToQuestionBank(int test_id, String question_id){
 		String update_test_id = "update questionbank SET test_id = '" + test_id + "' WHERE id = '" + question_id +"'";
 		return update_test_id;
 	}

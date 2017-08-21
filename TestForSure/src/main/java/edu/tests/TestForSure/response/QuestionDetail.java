@@ -1,15 +1,15 @@
 package edu.tests.TestForSure.response;
 
 public class QuestionDetail{
-	private int ques_id;
+	private String ques_id;
 	private Boolean correct;
 	private String correct_option;
 	private String marked_option;
 	private String explanation;
-	public int getQues_id() {
+	public String getQues_id() {
 		return ques_id;
 	}
-	public void setQues_id(int ques_id) {
+	public void setQues_id(String ques_id) {
 		this.ques_id = ques_id;
 	}
 	public Boolean getCorrect() {
@@ -40,7 +40,7 @@ public class QuestionDetail{
 	public String toString() {
 		return "QuestionDetail [ques_id=" + ques_id + ", correct=" + correct + ", explanation=" + explanation +", correct_option=" + correct_option +", marked_option=" + marked_option + "]";
 	}
-	public QuestionDetail(int ques_id, Boolean correct, String explanation, String correct_option, String marked_option) {
+	public QuestionDetail(String ques_id, Boolean correct, String explanation, String correct_option, String marked_option) {
 		super();
 		this.ques_id = ques_id;
 		this.correct = correct;

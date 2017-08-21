@@ -1,10 +1,10 @@
 package edu.tests.TestForSure.entity;
 
 public class Result{
-	private int question_id;
+	private String question_id;
 	private String marked_option;
 	
-	public Result(int question_id, String marked_option) {
+	public Result(String question_id, String marked_option) {
 		super();
 		this.question_id = question_id;
 		this.marked_option = marked_option;
@@ -12,10 +12,10 @@ public class Result{
 	public Result() {
 		super();
 	}
-	public int getQuestion_id() {
+	public String getQuestion_id() {
 		return question_id;
 	}
-	public void setQuestion_id(int question_id) {
+	public void setQuestion_id(String question_id) {
 		this.question_id = question_id;
 	}
 	public String getMarked_option() {

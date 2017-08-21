@@ -1,7 +1,7 @@
 package edu.tests.TestForSure.entity;
 
 public class QuestionBank {
-	private int id;
+	private String id;
 	private String test_id;	//can be multiple in database(comma separated)
 	private String question_type;
 	private String paragraph_text;
@@ -15,10 +15,12 @@ public class QuestionBank {
 	private String active;
 	private int category_id;
 	private int subcategory_id;
-	public int getId() {
+	private String category_name;
+	private String subcategory_name;
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getTest_id() {
@@ -104,9 +106,9 @@ public class QuestionBank {
 		super();
 	}
 	
-	public QuestionBank(int id, String test_id, String question_type, String paragraph_text, String question_text,
+	public QuestionBank(String id, String test_id, String question_type, String paragraph_text, String question_text,
 			String optionA, String optionB, String optionC, String optionD, String correct_option, String explanation,
-			String active, int category_id, int subcategory_id) {
+			String active, int category_id, int subcategory_id, String category_name, String subcategory_name) {
 		super();
 		this.id = id;
 		this.test_id = test_id;
@@ -122,6 +124,8 @@ public class QuestionBank {
 		this.active = active;
 		this.category_id = category_id;
 		this.subcategory_id = subcategory_id;
+		this.category_name = category_name;
+		this.subcategory_name = subcategory_name;
 	}
 	@Override
 	public String toString() {
@@ -129,7 +133,19 @@ public class QuestionBank {
 				+ ", paragraph_text=" + paragraph_text + ", question_text=" + question_text + ", optionA=" + optionA
 				+ ", optionB=" + optionB + ", optionC=" + optionC + ", optionD=" + optionD + ", correct_option="
 				+ correct_option + ", explanation=" + explanation + ", active=" + active + ", category_id="
-				+ category_id + ", subcategory_id=" + subcategory_id + "]";
+				+ category_id + ", subcategory_id=" + subcategory_id  + ", category_name=" + category_name  + ", subcategory_name=" + subcategory_name + "]";
+	}
+	public String getCategory_name() {
+		return category_name;
+	}
+	public void setCategory_name(String category_name) {
+		this.category_name = category_name;
+	}
+	public String getSubcategory_name() {
+		return subcategory_name;
+	}
+	public void setSubcategory_name(String subcategory_name) {
+		this.subcategory_name = subcategory_name;
 	}
 	
 }

@@ -2,11 +2,15 @@ package edu.tests.TestForSure.datalayer;
 
 import java.sql.*;
 import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import edu.tests.TestForSure.common.DBConnection;
 import edu.tests.TestForSure.entity.ExamCategory;
 import edu.tests.TestForSure.entity.ExamSubcategory;
 import edu.tests.TestForSure.entity.Question;
 import edu.tests.TestForSure.entity.TestDetails;
+import edu.tests.TestForSure.entity.TopPerformers;
 import edu.tests.TestForSure.entity.UserDetails;
 import edu.tests.TestForSure.response.CommonResponse;
 import edu.tests.TestForSure.response.GetCategoryResponse;
@@ -117,7 +121,7 @@ public class TestDAO {
 		}
 	}
 	
-	public static int insertUpdateQuestionDAO(Question question){
+	public static String insertUpdateQuestionDAO(Question question){
 		System.out.println("Calling DAO");
 		Connection conn = DBConnection.getDBConnection();
 		String query = CreateTestQueries.questionAlreadyExistsQueryBuilder(question.getId(), question.getTest_id());
@@ -146,12 +150,12 @@ public class TestDAO {
 				return question.getId();
 			}
 			else{
-				return 0;
+				return "0";
 			}
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
-			return 0;
+			return "0";
 		}
 	}
 	
@@ -347,7 +351,7 @@ public class TestDAO {
 			if(rs.isBeforeFirst()){
 				while(rs.next()){
 					Question question = new Question();
-					question.setId(rs.getInt(1));
+					question.setId(rs.getString(1));
 					question.setTest_id(rs.getInt(2));
 					question.setQues_type(rs.getString(3));
 					question.setParagraph_text(rs.getString(4));
@@ -450,7 +454,7 @@ public class TestDAO {
 		return response;
 	}
 	
-	public static CommonResponse deleteQuestion(int id, int test_id){
+	public static CommonResponse deleteQuestion(String id, int test_id){
 		System.out.println("Calling DAO");
 		CommonResponse response = new CommonResponse();
 		Connection conn = DBConnection.getDBConnection();
@@ -548,7 +552,7 @@ public class TestDAO {
 			if(rs.isBeforeFirst()){
 				while(rs.next()){
 					Question question = new Question();
-					question.setId(rs.getInt(1));
+					question.setId(rs.getString(1));
 					question.setCorrect_option(rs.getString(2));
 					question.setExplanation(rs.getString(3));
 					questionList.add(question);
@@ -725,4 +729,66 @@ public class TestDAO {
 		return total_candidate;
 	}
 	
+	public static ArrayList<TopPerformers> getTopPerformers(int testId){
+		System.out.println("Calling DAO");
+		ArrayList<TopPerformers> response = new ArrayList<TopPerformers>();
+		Connection conn = DBConnection.getDBConnection();
+		String query = "";
+		query = CreateTestQueries.getTopPerformers(testId);
+		System.out.println("Query: "+query);
+		ResultSet rs = null;
+		TopPerformers topPerformers = null;
+		try{
+			Statement statement = conn.createStatement();
+			rs = statement.executeQuery(query);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					topPerformers = new TopPerformers();
+					topPerformers.setName(rs.getString(1));
+					topPerformers.setRank(rs.getInt(2));
+					topPerformers.setMarks_scored(rs.getInt(3));
+					topPerformers.setTime_taken(rs.getInt(4));
+					response.add(topPerformers);
+				}
+			}
+			else{
+				System.out.println("No test found");
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+		}
+		return response;
+	}
+	public static TestResultResponse getAverage(int testId, TestResultResponse response){
+		System.out.println("Calling DAO");
+		Connection conn = DBConnection.getDBConnection();
+		String query = "";
+		query = CreateTestQueries.getAverage(testId);
+		System.out.println("Query: "+query);
+		ResultSet rs = null;
+		int marks_scored = 0;
+		int count = 0;
+		int time_taken = 0;
+		try{
+			Statement statement = conn.createStatement();
+			rs = statement.executeQuery(query);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					marks_scored+=rs.getInt(1);
+					time_taken+=rs.getInt(2);
+					count++;
+				}
+				response.setAvgScore(marks_scored/count);
+				response.setAvgTime(time_taken/count);
+			}
+			else{
+				System.out.println("No records found");
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+		}
+		return response;
+	}
 }

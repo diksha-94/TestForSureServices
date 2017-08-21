@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.tests.TestForSure.datalayer.TestDAO;
 import edu.tests.TestForSure.entity.TestDetailsRequest;
+import edu.tests.TestForSure.entity.TopPerformers;
 import edu.tests.TestForSure.entity.ExamCategory;
 import edu.tests.TestForSure.entity.ExamSubcategory;
 import edu.tests.TestForSure.entity.GetTestResultRequest;
@@ -84,11 +85,11 @@ public class TestServices {
 		AddQuestionResponse response = null;
 		System.out.println("Calling add question service: "+question);
 		try{
-			int question_id = TestDAO.insertUpdateQuestionDAO(question);
+			String question_id = TestDAO.insertUpdateQuestionDAO(question);
 			System.out.println("question_id: "+question_id);
-			if(question_id == 0){
+			if(question_id.equals("0")){
 				System.out.println("Failure in adding/updating ");
-				response = new AddQuestionResponse(false, "Error in adding/updating question", 0);
+				response = new AddQuestionResponse(false, "Error in adding/updating question", "0");
 			}
 			else{
 				response = new AddQuestionResponse(true, "", question_id);
@@ -306,7 +307,14 @@ public class TestServices {
 			resultResponse.setTotal_candidate(total_candidate);
 			resultResponse.setUsername(getTestResult.getUserDetails().getUsername());
 			
+			ArrayList<TopPerformers> list = TestDAO.getTopPerformers(test_id);
+			resultResponse.setTopPerformers(list);
+			resultResponse.setTopperScore((list.get(0)).getMarks_scored());
+			resultResponse.setTopperTime((list.get(0)).getTime_taken());
+			TestDAO.getAverage(test_id, resultResponse);
 			resultResponse.setCommon_response(commonResponse);
+			
+			
 		}
 		catch(Exception e){
 			System.out.println("Exception in service: "+e.getMessage());
@@ -317,4 +325,13 @@ public class TestServices {
 		
 		return resultResponse;
 	}
+	
+	@RequestMapping(method = {RequestMethod.GET}, value = "/send-email")
+	public void sendMail(){
+		System.out.println("Calling get subcategory service");;
+		TestEmail.sendSimpleMessage("bajaj.diksha45@gmail.com", "Test Subject", "test message");
+		System.out.println("E-mail sent!!");
+		
+	}
+	
 }

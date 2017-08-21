@@ -179,13 +179,15 @@ public class QuestionBankDAO {
 		System.out.println("Query: "+query);
 		ResultSet rs = null;
 		ArrayList<QuestionBank> list = new ArrayList<QuestionBank>();
+		int cat_id = 0;
+		int subcat_id = 0;
 		try{
 			Statement statement = conn.createStatement();
 			rs = statement.executeQuery(query);
 			if(rs.isBeforeFirst()){
 				while(rs.next()){
 					QuestionBank question = new QuestionBank();
-					question.setId(rs.getInt(1));
+					question.setId(rs.getString(1));
 					question.setTest_id(rs.getString(2));
 					question.setQuestion_type(rs.getString(3));
 					question.setParagraph_text(rs.getString(4));
@@ -198,11 +200,18 @@ public class QuestionBankDAO {
 					question.setExplanation(rs.getString(11));
 					question.setCategory_id(rs.getInt(12));
 					question.setSubcategory_id(rs.getInt(13));
+					cat_id = rs.getInt(12);
+					subcat_id = rs.getInt(13);
+					
+					question.setCategory_name(getCategoryName(cat_id));
+					question.setSubcategory_name(getSubcategoryName(subcat_id));
 					list.add(question);
 				}
 				response.setQuestions(list);
 				response.setStatus(true);
 				response.setMessage("");
+				
+				
 			}
 			else{
 				response.setStatus(false);
@@ -215,6 +224,53 @@ public class QuestionBankDAO {
 		return response;
 	}
 	
+	public static String getCategoryName(int id){
+		Connection conn = DBConnection.getDBConnection();
+		String query = "";
+		
+		query = CreateQuestionBankQueries.getCategoryNameQueryBuilder(id);
+		System.out.println("Query: "+query);
+		String category = "";
+		ResultSet rs = null;
+		try{
+			Statement statement = conn.createStatement();
+			rs = statement.executeQuery(query);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					category = rs.getString(1);
+				}
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+		}
+		
+		return category;
+	}
+	
+	public static String getSubcategoryName(int id){
+		Connection conn = DBConnection.getDBConnection();
+		String query = "";
+		
+		query = CreateQuestionBankQueries.getSubcategoryNameQueryBuilder(id);
+		System.out.println("Query: "+query);
+		String subcategory = "";
+		ResultSet rs = null;
+		try{
+			Statement statement = conn.createStatement();
+			rs = statement.executeQuery(query);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					subcategory = rs.getString(1);
+				}
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+		}
+		
+		return subcategory;
+	}
 	public static AddQuestionResponse addQuestionToQuestionBank(QuestionBank question){
 		System.out.println("Calling Add question to Question Bank DAO");
 		AddQuestionResponse response = new AddQuestionResponse();
@@ -232,7 +288,7 @@ public class QuestionBankDAO {
 				response.setMessage("Question added succefully to question bank");
 				query = CreateQuestionBankQueries.getLastInsertIdQuestionQueryBuilder();
 				ResultSet question_id = statement.executeQuery(query);
-				response.setQuestion_id(question_id.getInt(1));
+				response.setQuestion_id(question_id.getString(1));
 			}
 			else{
 				response.setStatus(false);
@@ -272,7 +328,7 @@ public class QuestionBankDAO {
 		return response;
 	}
 	
-	public static CommonResponse deleteQuestionFromQuestionBank(int id){
+	public static CommonResponse deleteQuestionFromQuestionBank(String id){
 		System.out.println("Calling delete question from question bank DAO");
 		CommonResponse response = new CommonResponse();
 		Connection conn = DBConnection.getDBConnection();
@@ -306,31 +362,52 @@ public class QuestionBankDAO {
 		Connection conn = DBConnection.getDBConnection();
 		
 		//Loop through all the question_id, first update the test_id in questionbank and then add question to questions from questionbank
-		
-		for(Integer i : request.getQuestion_id()){
-			String query = CreateQuestionBankQueries.updateTestIdToQuestionBank(request.getTest_id(), i);
-			
-			System.out.println("Query: "+query);
-			int result = 0;
+		String query="";
+		for(String i : request.getQuestion_id()){
+			//First check if a question already exists in the Questions, then just make it active, else add it
+			query = CreateTestQueries.questionAlreadyExistsQueryBuilder(i, request.getTest_id());
 			try{
 				Statement statement = conn.createStatement();
-				result = statement.executeUpdate(query);
-				if(result>0){
-					query = CreateQuestionBankQueries.insertQuestionFromQuestionBank(i);
-					System.out.println("Query: "+query);
-					result = statement.executeUpdate(query);
+				ResultSet res = statement.executeQuery(query);
+				if(res.isBeforeFirst()){
+					System.out.println("Inside update");
+					//update
+					String updateQuery = CreateTestQueries.updateQuestionQueryBuilder(true, i, request.getTest_id());
+					System.out.println("Update Query: "+updateQuery);
+					int result = statement.executeUpdate(updateQuery);
 					if(result>0){
 						response.setStatus(true);
-						response.setMessage("Successfully added question with question_id: "+i);
+						response.setMessage("Successfully updated question with question_id: "+i);
+					}
+					else{
+						response.setStatus(false);
+						response.setMessage("Error in updating Question");
+					}
+				}
+				else{
+					query = CreateQuestionBankQueries.updateTestIdToQuestionBank(request.getTest_id(), i);
+			
+					System.out.println("Query: "+query);
+					int result = 0;
+			
+					result = statement.executeUpdate(query);
+					if(result>0){
+						query = CreateQuestionBankQueries.insertQuestionFromQuestionBank(i);
+						System.out.println("Query: "+query);
+						result = statement.executeUpdate(query);
+						if(result>0){
+							response.setStatus(true);
+							response.setMessage("Successfully added question with question_id: "+i);
+						}
+						else{
+							response.setStatus(false);
+							response.setMessage("Error in adding Question");
+						}
 					}
 					else{
 						response.setStatus(false);
 						response.setMessage("Error in adding Question");
 					}
-				}
-				else{
-					response.setStatus(false);
-					response.setMessage("Error in adding Question");
 				}
 			}
 			catch(Exception e){

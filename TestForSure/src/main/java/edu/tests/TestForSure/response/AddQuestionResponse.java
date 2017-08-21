@@ -3,7 +3,7 @@ package edu.tests.TestForSure.response;
 public class AddQuestionResponse {
 	Boolean status;
 	String message;
-	int question_id;
+	String question_id;
 	
 	public Boolean getStatus() {
 		return status;
@@ -17,10 +17,10 @@ public class AddQuestionResponse {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public int getQuestion_id() {
+	public String getQuestion_id() {
 		return question_id;
 	}
-	public void setQuestion_id(int question_id) {
+	public void setQuestion_id(String question_id) {
 		this.question_id = question_id;
 	}
 	@Override
@@ -28,7 +28,7 @@ public class AddQuestionResponse {
 		return "GetCategoryResponse [status=" + status + ", message="
 				+ message + ", question_id=" + question_id + "]";
 	}
-	public AddQuestionResponse(Boolean status, String message, int question_id) {
+	public AddQuestionResponse(Boolean status, String message, String question_id) {
 		super();
 		this.status = status;
 		this.message = message;

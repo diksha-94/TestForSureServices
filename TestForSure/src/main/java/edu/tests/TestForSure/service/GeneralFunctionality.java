@@ -22,7 +22,7 @@ public class GeneralFunctionality {
 		TestResultResponse response = new TestResultResponse();
 		for(Result result : candidateResponse){
 			for(Question actual : actualResponse.getQuestion()){
-				if(result.getQuestion_id() == actual.getId()){
+				if((result.getQuestion_id()).equals(actual.getId())){
 					if(result.getMarked_option()!=null){
 						questionAttempted++;
 						if((result.getMarked_option()).equalsIgnoreCase(actual.getCorrect_option())){
@@ -49,14 +49,15 @@ public class GeneralFunctionality {
 	
 	public static ArrayList<QuestionDetail> generateQuestionsReport(ArrayList<Result> candidateResponse, GetQuestionsResponse actualResponse){
 		ArrayList<QuestionDetail> list = new ArrayList<QuestionDetail>();
-		
+		System.out.println("candidate response: "+candidateResponse);
+		System.out.println("actual response: "+actualResponse);
 		for(Question actual : actualResponse.getQuestion()){
 			QuestionDetail question = new QuestionDetail();
 			question.setQues_id(actual.getId());
 			question.setCorrect_option(actual.getCorrect_option());
 			question.setExplanation(actual.getExplanation());
 			for(Result result : candidateResponse){
-				if(actual.getId() == result.getQuestion_id()){
+				if(actual.getId().equals(result.getQuestion_id())){
 					if(result.getMarked_option()!=null){
 						question.setMarked_option(result.getMarked_option());
 						if((result.getMarked_option()).equalsIgnoreCase(actual.getCorrect_option())){
@@ -90,4 +91,6 @@ public class GeneralFunctionality {
 		CommonResponse response = TestDAO.manageAllUsersRank(rank, test_id);
 		return response;
 	}
+	
+	
 }
