@@ -80,6 +80,7 @@ public class GeneralFunctionality {
 	}
 	
 	public static CommonResponse saveTestReport(TestResultResponse resultResponse, UserDetails userDetails){
+		System.out.println("Time taken from GEneral functionality: "+resultResponse.getTime_taken());
 		CommonResponse response = TestDAO.insertTestReport(resultResponse, userDetails);
 		return response;
 	}

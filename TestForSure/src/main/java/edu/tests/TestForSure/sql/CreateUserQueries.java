@@ -18,12 +18,17 @@ public class CreateUserQueries {
 	}
 	
 	public static String getUserIdQueryBuilder(String email) {
-		String getUserId = "SELECT id from userdetails WHERE email = '"+ email +"'";
+		String getUserId = "SELECT id, name from userdetails WHERE email = '"+ email +"'";
 		return getUserId;
 	}
 	
 	public static String getPasswordQueryBuilder(String userId) {
 		String getPassword = "SELECT password from usercreds WHERE user_id = '"+ userId +"'";
 		return getPassword;
+	}
+	
+	public static String testEmailIdExists(String emailId) {
+		String testEmailExists = "SELECT * from userdetails WHERE email = '"+ emailId +"'";
+		return testEmailExists;
 	}
 }

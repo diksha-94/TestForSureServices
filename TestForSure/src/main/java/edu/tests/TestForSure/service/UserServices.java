@@ -13,6 +13,7 @@ import edu.tests.TestForSure.entity.RegisterUserRequest;
 import edu.tests.TestForSure.entity.User;
 import edu.tests.TestForSure.entity.UserCreds;
 import edu.tests.TestForSure.response.CommonResponse;
+import edu.tests.TestForSure.response.LoginUserResponse;
 
 @CrossOrigin
 @RestController
@@ -20,9 +21,10 @@ import edu.tests.TestForSure.response.CommonResponse;
 public class UserServices {
 
 	@RequestMapping(method = {RequestMethod.POST}, value = "/register-user")
-	public CommonResponse registerUser(@RequestBody RegisterUserRequest request){
+	public LoginUserResponse registerUser(@RequestBody RegisterUserRequest request){
 		System.out.println("Calling register user service");;
-		CommonResponse response = null;
+		LoginUserResponse response = new LoginUserResponse();
+		CommonResponse res = null;
 		User user = new User();
 		user.setId(request.getUserDetails().getId());
 		user.setName(request.getUserDetails().getName());
@@ -31,8 +33,8 @@ public class UserServices {
 		
 		String encryptedPassword = PasswordEncryption.encryptPassword(request.getPassword());
 		if(encryptedPassword.equals("exception")){
-			response.setStatus(false);
-			response.setMessage("Error in encrypting password");
+			res = new CommonResponse(false, "Error in encrypting password");
+			response.setResponse(res);
 			return response;
 		}
 		UserCreds userCreds = new UserCreds();
@@ -40,6 +42,7 @@ public class UserServices {
 		userCreds.setPassword(encryptedPassword);
 		try{
 			response = UserDAO.registerUserDAO(user, userCreds);
+			response.setUsername(user.getName());
 		}
 		catch(Exception e){
 			System.out.println("Exception in service: "+e.getMessage());
@@ -48,29 +51,30 @@ public class UserServices {
 	}
 	
 	@RequestMapping(method = {RequestMethod.POST}, value = "/authenticate-user")
-	public CommonResponse authenticateUser(@RequestBody AuthenticateUserRequest request){
+	public LoginUserResponse authenticateUser(@RequestBody AuthenticateUserRequest request){
 		System.out.println("Calling authenticate user service");;
-		CommonResponse sendResponse = new CommonResponse();
+		LoginUserResponse sendResponse = new LoginUserResponse();
+		CommonResponse res = null;
 		try{
-			CommonResponse response = UserDAO.authenticateUserDAO(request.getEmail());
+			LoginUserResponse response = UserDAO.authenticateUserDAO(request.getEmail());
+			sendResponse.setUsername(response.getUsername());
 			System.out.println(response);
 			System.out.println("Password: "+(PasswordEncryption.encryptPassword(request.getPassword())));
 			String password = (PasswordEncryption.encryptPassword(request.getPassword()));
-			if(response.getStatus()){
-				if(password.equals(response.getMessage())){
-					System.out.println("Inside equal");
-					sendResponse.setStatus(true);
-					sendResponse.setMessage("User authenticated successfully");
+			if(response.getResponse().getStatus()){
+				if(password.equals(response.getPassword())){
+					System.out.println("Inside equals");
+					res = new CommonResponse(true, "User authenticated successfully");
+					sendResponse.setResponse(res);
 				}
 				else{
 					System.out.println("Inside not equal");
-					sendResponse.setStatus(false);
-					sendResponse.setMessage("Email/Password is incorrect");
+					res = new CommonResponse(false, "Email/Password is incorrect");
+					sendResponse.setResponse(res);
 				}
 			}
 			else{
-				sendResponse.setStatus(false);
-				sendResponse.setMessage(response.getMessage());
+				sendResponse = response;
 			}
 		}
 		catch(Exception e){

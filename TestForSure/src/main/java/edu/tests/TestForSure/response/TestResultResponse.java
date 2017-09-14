@@ -13,7 +13,7 @@ public class TestResultResponse {
 	private int total_marks;
 	private int marks_scored;
 	private int rank;
-	private int time_taken;
+	private Double time_taken;
 	private int total_candidate;
 	private int topperScore;
 	private double topperTime;
@@ -72,10 +72,10 @@ public class TestResultResponse {
 	public void setRank(int rank) {
 		this.rank = rank;
 	}
-	public int getTime_taken() {
+	public Double getTime_taken() {
 		return time_taken;
 	}
-	public void setTime_taken(int time_taken) {
+	public void setTime_taken(Double time_taken) {
 		this.time_taken = time_taken;
 	}
 	public ArrayList<QuestionDetail> getQuestion_details() {
@@ -143,7 +143,7 @@ public class TestResultResponse {
 				+ avgScore + ", avgTime=" + avgTime+ ",topPerformers=" + topPerformers + "]";
 	}
 	public TestResultResponse(int test_id, int total_ques, int ques_attempted, int correct_ques, int incorrect_ques,
-			int total_marks, int marks_scored, int rank, int time_taken, ArrayList<QuestionDetail> question_details, CommonResponse common_response,
+			int total_marks, int marks_scored, int rank, Double time_taken, ArrayList<QuestionDetail> question_details, CommonResponse common_response,
 			int total_candidate, String username, int topperScore, double topperTime, double avgScore, double avgTime, ArrayList<TopPerformers> topPerformers) {
 		super();
 		this.test_id = test_id;

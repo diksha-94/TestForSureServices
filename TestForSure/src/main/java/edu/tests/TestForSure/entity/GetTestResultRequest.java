@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class GetTestResultRequest {
 	private UserDetails userDetails;
+	private Double time_rem;
 	private TestId testDetails;
 	private ArrayList<Result> result;
 	public TestId getTestDetails() {
@@ -11,6 +12,12 @@ public class GetTestResultRequest {
 	}
 	public void setTestDetails(TestId testDetails) {
 		this.testDetails = testDetails;
+	}
+	public Double getTime_rem() {
+		return time_rem;
+	}
+	public void setTime_rem(Double time_rem) {
+		this.time_rem = time_rem;
 	}
 	public ArrayList<Result> getResult() {
 		return result;
@@ -26,11 +33,12 @@ public class GetTestResultRequest {
 	}
 	@Override
 	public String toString() {
-		return "GetTestResultRequest [testDetails=" + testDetails + ", result=" + result + ", userDetails=" + userDetails +"]";
+		return "GetTestResultRequest [testDetails=" + testDetails + ", result=" + result + ", userDetails=" + userDetails +",time_rem=" + time_rem + "]";
 	}
-	public GetTestResultRequest(UserDetails userDetails, TestId testDetails, ArrayList<Result> result) {
+	public GetTestResultRequest(UserDetails userDetails, Double time_rem, TestId testDetails, ArrayList<Result> result) {
 		super();
 		this.userDetails = userDetails;
+		this.time_rem = time_rem;
 		this.testDetails = testDetails;
 		this.result = result;
 	}
