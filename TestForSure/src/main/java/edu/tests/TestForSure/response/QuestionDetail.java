@@ -6,6 +6,7 @@ public class QuestionDetail{
 	private String correct_option;
 	private String marked_option;
 	private String explanation;
+	private int time_spent;
 	public String getQues_id() {
 		return ques_id;
 	}
@@ -17,6 +18,12 @@ public class QuestionDetail{
 	}
 	public void setCorrect(Boolean correct) {
 		this.correct = correct;
+	}
+	public int getTime_spent() {
+		return time_spent;
+	}
+	public void setTime_spent(int time_spent) {
+		this.time_spent = time_spent;
 	}
 	public String getExplanation() {
 		return explanation;
@@ -38,15 +45,16 @@ public class QuestionDetail{
 	}
 	@Override
 	public String toString() {
-		return "QuestionDetail [ques_id=" + ques_id + ", correct=" + correct + ", explanation=" + explanation +", correct_option=" + correct_option +", marked_option=" + marked_option + "]";
+		return "QuestionDetail [ques_id=" + ques_id + ", correct=" + correct + ", explanation=" + explanation +", correct_option=" + correct_option +", marked_option=" + marked_option + ", time_spent=" + time_spent + "]";
 	}
-	public QuestionDetail(String ques_id, Boolean correct, String explanation, String correct_option, String marked_option) {
+	public QuestionDetail(String ques_id, Boolean correct, String explanation, String correct_option, String marked_option, int time_spent) {
 		super();
 		this.ques_id = ques_id;
 		this.correct = correct;
 		this.explanation = explanation;
 		this.correct_option = correct_option;
 		this.marked_option = marked_option;
+		this.time_spent = time_spent;
 	}
 	public QuestionDetail() {
 		super();

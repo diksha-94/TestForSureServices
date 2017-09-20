@@ -3,6 +3,7 @@ package edu.tests.TestForSure.sql;
 import edu.tests.TestForSure.entity.Question;
 import edu.tests.TestForSure.entity.TestDetails;
 import edu.tests.TestForSure.entity.UserDetails;
+import edu.tests.TestForSure.response.QuestionDetail;
 import edu.tests.TestForSure.response.TestResultResponse;
 
 public class CreateTestQueries {
@@ -202,5 +203,11 @@ public class CreateTestQueries {
 	public static String getAverage(int test_id){
 		String query = "SELECT marks_scored, time_taken FROM testreports WHERE test_id = '" + test_id + "'";
 		return query;
+	}
+	
+	public static String insertTestQuestionReport(int test_id, String username, QuestionDetail question) {
+		String insertQuestionReport = "INSERT into testquestionreport (test_id, ques_id, user_id, correct, time_spent, correct_option, marked_option, explanation) values ('"+
+					test_id +"' , '" +question.getQues_id() + "' , '"+username + "' , '"+question.getCorrect() + "' , '"+question.getTime_spent()+ "' , '"+question.getCorrect_option()+ "' , '"+question.getMarked_option()+ "' , '"+question.getExplanation() + "')";
+		return insertQuestionReport;
 	}
 }

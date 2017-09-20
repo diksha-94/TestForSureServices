@@ -791,4 +791,36 @@ public class TestDAO {
 		}
 		return response;
 	}
+	
+	public static CommonResponse insertTestQuestionsReport(TestResultResponse resultResponse){
+		System.out.println("Calling DAO");
+		CommonResponse response = new CommonResponse();
+		Connection conn = DBConnection.getDBConnection();
+		String query = "";
+		try{
+			for(int i=0; i<(resultResponse.getQuestion_details()).size(); i++){
+				query = CreateTestQueries.insertTestQuestionReport(resultResponse.getTest_id(), resultResponse.getUsername(), resultResponse.getQuestion_details().get(i));
+				System.out.println("Query: "+query);
+				int result = 0;
+				Statement statement = conn.createStatement();
+				result = statement.executeUpdate(query);
+				if(result>0){
+					response.setStatus(true);
+					response.setMessage("Question wit ques_id"+resultResponse.getQuestion_details().get(i).getQues_id()+" added successfully");
+				}
+				else{
+					response.setStatus(false);
+					response.setMessage("Error in adding the question with ques_id "+resultResponse.getQuestion_details().get(i).getQues_id());
+					return response;
+				}
+			}
+		}	
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+		}
+		return response;
+	}
+	
 }

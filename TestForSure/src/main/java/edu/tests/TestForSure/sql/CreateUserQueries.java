@@ -31,4 +31,19 @@ public class CreateUserQueries {
 		String testEmailExists = "SELECT * from userdetails WHERE email = '"+ emailId +"'";
 		return testEmailExists;
 	}
+	
+	public static String updatePasswordQueryBuilder(String id, String password) {
+		String updatePassword = "UPDATE usercreds set password = '"+password+"' WHERE user_id = '"+id+"'";
+		return updatePassword;
+	}
+	
+	public static String checkIfPasswordIsSame(String id, String password) {
+		String samePassword = "SELECT * from usercreds WHERE user_id = '"+ id +"'and password = '"+password+"'";
+		return samePassword;
+	}
+	
+	public static String getCurrentPassword(String id) {
+		String currentPassword = "SELECT password from usercreds WHERE user_id = '"+ id +"'";
+		return currentPassword;
+	}
 }

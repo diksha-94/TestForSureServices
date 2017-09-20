@@ -317,7 +317,9 @@ public class TestServices {
 			TestDAO.getAverage(test_id, resultResponse);
 			resultResponse.setCommon_response(commonResponse);
 			
-			
+			//Send the resultResponse to save all the questions into database
+			CommonResponse testResponse = TestDAO.insertTestQuestionsReport(resultResponse);
+			System.out.println("Response from adding test questions: "+testResponse);
 		}
 		catch(Exception e){
 			System.out.println("Exception in service: "+e.getMessage());

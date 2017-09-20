@@ -138,4 +138,165 @@ public class UserDAO {
 		}
 		return response;
 	}
+	
+	public static CommonResponse checkEmailExists(String email){
+		System.out.println("Calling Check email exists or not DAO");
+		CommonResponse response = new CommonResponse();
+		String checkEmailQuery = CreateUserQueries.testEmailIdExists(email);
+		
+		Connection conn = null;
+		try {
+			conn = DBConnection.getDBConnection();
+			
+			Statement statement = conn.createStatement();
+			ResultSet rs = statement.executeQuery(checkEmailQuery);
+			String userId = "";
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					userId = rs.getString(1);
+				}
+				System.out.println(userId);
+				response.setStatus(true);
+				response.setMessage(userId);
+			}
+			else{
+				response.setStatus(false);
+				response.setMessage("Entered email is not registered");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("SQL exception: "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+		}
+		finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
+		}
+		return response;
+	}
+	
+	public static CommonResponse updatePassword(String id, String password){
+		System.out.println("Calling update password DAO");
+		CommonResponse response = new CommonResponse();
+		String updatePasswordQuery = CreateUserQueries.updatePasswordQueryBuilder(id, password);
+		
+		Connection conn = null;
+		try {
+			conn = DBConnection.getDBConnection();
+			
+			Statement statement = conn.createStatement();
+			int rs = statement.executeUpdate(updatePasswordQuery);
+			if(rs>0){
+				response.setStatus(true);
+				response.setMessage("Password updated successfully");
+			}
+			else{
+				response.setStatus(false);
+				response.setMessage("Error in updating password");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("SQL exception: "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+		}
+		finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
+		}
+		return response;
+	}
+	
+	public static CommonResponse checkIfPasswordIsSame(String id, String password){
+		System.out.println("Calling check password is same DAO");
+		CommonResponse response = new CommonResponse();
+		String checkPasswordQuery = CreateUserQueries.checkIfPasswordIsSame(id, password);
+		
+		Connection conn = null;
+		try {
+			conn = DBConnection.getDBConnection();
+			
+			Statement statement = conn.createStatement();
+			ResultSet rs = statement.executeQuery(checkPasswordQuery);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					response.setStatus(false);
+					response.setMessage("New Password must be different from the old password");
+				}
+			}
+			else{
+				response.setStatus(true);
+				response.setMessage("Password is different");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("SQL exception: "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+		}
+		finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
+		}
+		return response;
+	}
+	
+	public static CommonResponse getCurretPassword(String id){
+		System.out.println("Calling get current password DAO");
+		CommonResponse response = new CommonResponse();
+		String getCurrentPassword = CreateUserQueries.getCurrentPassword(id);
+		System.out.println("Get Password query: "+getCurrentPassword);
+		Connection conn = null;
+		try {
+			conn = DBConnection.getDBConnection();
+			
+			Statement statement = conn.createStatement();
+			ResultSet rs = statement.executeQuery(getCurrentPassword);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					response.setStatus(true);
+					response.setMessage(rs.getString(1));
+				}
+			}
+			else{
+				response.setStatus(false);
+				response.setMessage("Error in getting Current Password");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("SQL exception: "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+		}
+		finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
+		}
+		return response;
+	}
 }
