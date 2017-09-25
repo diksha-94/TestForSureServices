@@ -10,6 +10,7 @@ public class TestDetails {
 	private int correct_ques_marks;
 	private int negative_marks;
 	private Boolean active;
+	private String imagePath;
 	public int getId() {
 		return id;
 	}
@@ -64,14 +65,20 @@ public class TestDetails {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
 	@Override
 	public String toString() {
 		return "TestDetails [id=" + id + ", cat_id=" + cat_id + ", subcat_id=" + subcat_id + ", testTitle=" + testTitle
 				+ ", no_of_ques=" + no_of_ques + ", time_limit=" + time_limit + ", correct_ques_marks="
-				+ correct_ques_marks + ", negative_marks=" + negative_marks + ", active=" + active + "]";
+				+ correct_ques_marks + ", negative_marks=" + negative_marks + ", active=" + active + ", imagePath=" + imagePath + "]";
 	}
 	public TestDetails(int id, int cat_id, int subcat_id, String testTitle, int no_of_ques, int time_limit,
-			int correct_ques_marks, int negative_marks, Boolean active) {
+			int correct_ques_marks, int negative_marks, Boolean active, String imagePath) {
 		super();
 		this.id = id;
 		this.cat_id = cat_id;
@@ -82,6 +89,7 @@ public class TestDetails {
 		this.correct_ques_marks = correct_ques_marks;
 		this.negative_marks = negative_marks;
 		this.active = active;
+		this.imagePath = imagePath;
 	}
 	public TestDetails(){
 		super();

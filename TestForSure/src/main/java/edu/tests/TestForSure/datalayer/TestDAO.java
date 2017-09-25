@@ -260,6 +260,9 @@ public class TestDAO {
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
 					testDetails.setNegative_marks(rs.getInt(8));
 					
+					String imagePath = TestDAO.getTestImagePathDAO(testDetails.getCat_id());
+					
+					testDetails.setImagePath(imagePath);
 					list.add(testDetails);
 				}
 				response.setTestDetails(list);
@@ -820,6 +823,28 @@ public class TestDAO {
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
 		}
+		return response;
+	}
+	
+	public static String getTestImagePathDAO(int cat_id){
+		System.out.println("Calling DAO");
+		String query = CreateTestQueries.getTestImagePath(cat_id);
+		Connection conn = DBConnection.getDBConnection();
+		ResultSet rs = null;
+		String response = null;
+		try{
+			Statement statement = conn.createStatement();
+			rs = statement.executeQuery(query);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					response = rs.getString(1);
+				}
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO: "+e.getMessage());
+		}
+		
 		return response;
 	}
 	

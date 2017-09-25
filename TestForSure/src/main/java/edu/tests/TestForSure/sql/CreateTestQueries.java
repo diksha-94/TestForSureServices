@@ -210,4 +210,8 @@ public class CreateTestQueries {
 					test_id +"' , '" +question.getQues_id() + "' , '"+username + "' , '"+question.getCorrect() + "' , '"+question.getTime_spent()+ "' , '"+question.getCorrect_option()+ "' , '"+question.getMarked_option()+ "' , '"+question.getExplanation() + "')";
 		return insertQuestionReport;
 	}
+	public static String getTestImagePath(int cat_id){
+		String query = "SELECT imagePath FROM examcategory WHERE id = '" + cat_id + "'";
+		return query;
+	}
 }

@@ -132,17 +132,11 @@ public class UserServices {
 					String link = "file:///C:/MyGit/Test-for-sure-app/User%20Interface/TestForSureUI/WebContent/html/PasswordReset.html?userId="+registeredId+"&pass="+currentPassword;
 					
 					StringBuilder sb = new StringBuilder();
-					sb.append("<html>");
-					sb.append("<head>");
-					sb.append("</head>");
-					sb.append("<body>");
 					sb.append("<h4>Greetings!!</h4></br>");
 					sb.append("<p>Below is the link to reset password for your account</p></br>");
 					sb.append("<a href='"+link+"'>"+link+"</a></br></br>");
 					sb.append("<p>Thanks,</p></br>");
 					sb.append("<p>TEST Team</p>");
-					sb.append("</body>");
-					sb.append("</html>");
 					
 					System.out.println("html: "+sb.toString());
 					String body = sb.toString();
