@@ -197,7 +197,7 @@ public class CreateTestQueries {
 		return last_insert_id;
 	}
 	public static String getTopPerformers(int test_id){
-		String query = "SELECT username,rank,marks_scored, time_taken FROM testreports WHERE test_id = '" + test_id + "' ORDER BY rank ASC LIMIT 10";
+		String query = "SELECT username,rank,marks_scored, time_taken FROM testreports WHERE test_id = '" + test_id + "' ORDER BY rank ASC";
 		return query;
 	}
 	public static String getAverage(int test_id){
@@ -212,6 +212,14 @@ public class CreateTestQueries {
 	}
 	public static String getTestImagePath(int cat_id){
 		String query = "SELECT imagePath FROM examcategory WHERE id = '" + cat_id + "'";
+		return query;
+	}
+	public static String checkCategoryExists(String category){
+		String query = "SELECT * FROM examcategory WHERE category = '" + category + "'";
+		return query;
+	}
+	public static String checkSubcategoryExists(String subcategory){
+		String query = "SELECT * FROM examsubcategory WHERE subcategory = '" + subcategory + "'";
 		return query;
 	}
 }
