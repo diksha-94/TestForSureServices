@@ -86,9 +86,9 @@ public class GeneralFunctionality {
 		return list;
 	}
 	
-	public static CommonResponse saveTestReport(TestResultResponse resultResponse, UserDetails userDetails){
+	public static CommonResponse saveTestReport(TestResultResponse resultResponse, UserDetails userDetails, int no_of_ques){
 		System.out.println("Time taken from GEneral functionality: "+resultResponse.getTime_taken());
-		CommonResponse response = TestDAO.insertTestReport(resultResponse, userDetails);
+		CommonResponse response = TestDAO.insertTestReport(resultResponse, userDetails, no_of_ques);
 		return response;
 	}
 	public static int findCandidateRank(int marks_scored, int test_id){

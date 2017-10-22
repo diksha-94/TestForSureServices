@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.tests.TestForSure.datalayer.TestDAO;
+import edu.tests.TestForSure.datalayer.TestReportDAO;
 import edu.tests.TestForSure.entity.TestDetailsRequest;
 import edu.tests.TestForSure.entity.TopPerformers;
 import edu.tests.TestForSure.entity.ExamCategory;
@@ -25,6 +26,8 @@ import edu.tests.TestForSure.response.GetQuestionsResponse;
 import edu.tests.TestForSure.response.GetSingleTestDetailsResponse;
 import edu.tests.TestForSure.response.GetSubcategoryResponse;
 import edu.tests.TestForSure.response.GetTestDetailsResponse;
+import edu.tests.TestForSure.response.GetTestReportResponse;
+import edu.tests.TestForSure.response.GetTestSoltionResponse;
 import edu.tests.TestForSure.response.QuestionDetail;
 import edu.tests.TestForSure.response.TestResultResponse;
 
@@ -257,6 +260,7 @@ public class TestServices {
 		TestDetails testDetails = null;
 		TestResultResponse resultResponse = new TestResultResponse();
 		int test_id = getTestResult.getTestDetails().getTest_id();
+		int lastReportId = 0;
 		try{
 			questionAnswers = TestDAO.getAnswers(test_id);
 			System.out.println("Question Answers: "+questionAnswers);
@@ -288,11 +292,11 @@ public class TestServices {
 				CommonResponse response = GeneralFunctionality.manageAllCandidateRank(rank, test_id);
 				if(response.getStatus()){
 					//If rank successfully updated for all the candidates, add the current candidate's report to the database
-					CommonResponse response1 = GeneralFunctionality.saveTestReport(resultResponse, getTestResult.getUserDetails());
+					CommonResponse response1 = GeneralFunctionality.saveTestReport(resultResponse, getTestResult.getUserDetails(), testDetails.getNo_of_ques());
 					if(response1.getStatus()){
 						commonResponse.setStatus(true);
 						commonResponse.setMessage("Successfully get the test result and the report has been saved");
-						
+						lastReportId = Integer.parseInt(((response1.getMessage()).split("-"))[1]);
 					}
 					else{
 						commonResponse.setStatus(false);
@@ -308,7 +312,7 @@ public class TestServices {
 				System.out.println("Error in updated the total number of candidates");
 			}
 			resultResponse.setTotal_candidate(total_candidate);
-			resultResponse.setUsername(getTestResult.getUserDetails().getUsername());
+			resultResponse.setUsername(getTestResult.getUserDetails().getEmail());
 			
 			ArrayList<TopPerformers> list = TestDAO.getTopPerformers(test_id);
 			resultResponse.setTopPerformers(list);
@@ -318,7 +322,7 @@ public class TestServices {
 			resultResponse.setCommon_response(commonResponse);
 			
 			//Send the resultResponse to save all the questions into database
-			CommonResponse testResponse = TestDAO.insertTestQuestionsReport(resultResponse);
+			CommonResponse testResponse = TestDAO.insertTestQuestionsReport(resultResponse, lastReportId);
 			System.out.println("Response from adding test questions: "+testResponse);
 		}
 		catch(Exception e){
@@ -331,9 +335,67 @@ public class TestServices {
 		return resultResponse;
 	}
 	
+	@RequestMapping(method = {RequestMethod.GET}, value = "/test-already-attempted")
+	public CommonResponse alreadyAttempted(@RequestParam(value="test_id") int test_id,
+										   @RequestParam(value="email_id") String email_id){
+		System.out.println("Calling test already attempted service");
+		System.out.println("Test_id: "+test_id);
+		System.out.println("Email_id: "+email_id);
+		
+		CommonResponse response = new CommonResponse();
+		
+		try{
+			Boolean res = TestDAO.checkAlreadyAttempted(test_id, email_id);
+			response.setStatus(res);
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+			response.setStatus(false);
+		}
+		return response;
+	}
+	
+	@RequestMapping(method = {RequestMethod.GET}, value = "/get-all-reports")
+	public GetTestReportResponse getAllReports(@RequestParam(value="test_id") int test_id,
+										   @RequestParam(value="email_id") String email_id){
+		System.out.println("Calling get all reportsservice");
+		System.out.println("Test_id: "+test_id);
+		System.out.println("Email_id: "+email_id);
+		
+		GetTestReportResponse response = new GetTestReportResponse();
+		
+		try{
+			response = TestReportDAO.getTestReport(test_id, email_id);
+			
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+			
+		}
+		return response;
+	}
+	
+	@RequestMapping(method = {RequestMethod.GET}, value = "/get-test-solution")
+	public GetTestSoltionResponse getTestSolution(@RequestParam(value="test_report_id") int test_report_id){
+		System.out.println("Calling get test solution");
+		System.out.println("test_report_id: "+test_report_id);
+		
+		GetTestSoltionResponse response = new GetTestSoltionResponse();
+		
+		try{
+			response = TestReportDAO.getTestSolution(test_report_id);
+			
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+			
+		}
+		return response;
+	}
+	
 	@RequestMapping(method = {RequestMethod.GET}, value = "/send-email")
 	public void sendMail(){
-		System.out.println("Calling get subcategory service");;
+		System.out.println("Calling get subcategory service");
 		TestEmail.sendSimpleMessage("bajaj.diksha45@gmail.com", "Test Subject", "test message");
 		System.out.println("E-mail sent!!");
 		

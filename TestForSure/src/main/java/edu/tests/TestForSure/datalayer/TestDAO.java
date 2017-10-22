@@ -614,12 +614,12 @@ public class TestDAO {
 		return testDetails;
 	}
 	
-	public static CommonResponse insertTestReport(TestResultResponse resultResponse, UserDetails userDetails){
+	public static CommonResponse insertTestReport(TestResultResponse resultResponse, UserDetails userDetails, int no_of_ques){
 		System.out.println("Calling DAO");
 		CommonResponse response = new CommonResponse();
 		Connection conn = DBConnection.getDBConnection();
 		String query = "";
-		query = CreateTestQueries.insertTestReport(resultResponse, userDetails);
+		query = CreateTestQueries.insertTestReport(resultResponse, userDetails, no_of_ques);
 		System.out.println("Query: "+query);
 		int result = 0;
 		try{
@@ -627,7 +627,17 @@ public class TestDAO {
 			result = statement.executeUpdate(query);
 			if(result>0){
 				response.setStatus(true);
-				response.setMessage("Test report for user "+userDetails.getUsername()+" added successfully");
+				query = CreateTestQueries.getLastInsertReportId();
+				statement = conn.createStatement();
+				ResultSet rs = statement.executeQuery(query);
+				int id = 0;
+				if(rs.isBeforeFirst()){
+					while(rs.next()){
+						id = rs.getInt(1);
+					}
+				}
+				System.out.println("Last insert id of report: "+id);
+				response.setMessage("Test report for user "+userDetails.getUsername()+" added successfully-"+id);
 			}
 			else{
 				response.setStatus(false);
@@ -795,14 +805,14 @@ public class TestDAO {
 		return response;
 	}
 	
-	public static CommonResponse insertTestQuestionsReport(TestResultResponse resultResponse){
+	public static CommonResponse insertTestQuestionsReport(TestResultResponse resultResponse, int lastReportId){
 		System.out.println("Calling DAO");
 		CommonResponse response = new CommonResponse();
 		Connection conn = DBConnection.getDBConnection();
 		String query = "";
 		try{
 			for(int i=0; i<(resultResponse.getQuestion_details()).size(); i++){
-				query = CreateTestQueries.insertTestQuestionReport(resultResponse.getTest_id(), resultResponse.getUsername(), resultResponse.getQuestion_details().get(i));
+				query = CreateTestQueries.insertTestQuestionReport(resultResponse.getTest_id(), resultResponse.getUsername(), resultResponse.getQuestion_details().get(i), lastReportId);
 				System.out.println("Query: "+query);
 				int result = 0;
 				Statement statement = conn.createStatement();
@@ -847,5 +857,30 @@ public class TestDAO {
 		
 		return response;
 	}
+	
+	public static Boolean checkAlreadyAttempted(int test_id, String email_id){
+		System.out.println("Calling DAO");
+		String query = CreateTestQueries.checkAlreadyAttempted(test_id, email_id);
+		System.out.println("Query: "+query);
+		Connection conn = DBConnection.getDBConnection();
+		ResultSet rs = null;
+		Boolean response = false;
+		try{
+			Statement statement = conn.createStatement();
+			rs = statement.executeQuery(query);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					response = true;
+				}
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO: "+e.getMessage());
+			response = false;
+		}
+		
+		return response;
+	}
+	
 	
 }

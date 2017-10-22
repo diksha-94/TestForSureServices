@@ -162,10 +162,10 @@ public class CreateTestQueries {
 		return getAnswers;
 	}
 	
-	public static String insertTestReport(TestResultResponse resultResponse, UserDetails userDetails) {
-		String insertTestReport = "INSERT into testreports (test_id, username, emailid, mobile_number, marks_scored, time_taken, rank, questions_attempted, correct_ques, incorrect_ques) values ('"+
+	public static String insertTestReport(TestResultResponse resultResponse, UserDetails userDetails, int no_of_ques) {
+		String insertTestReport = "INSERT into testreports (test_id, username, emailid, mobile_number, marks_scored, time_taken, rank, questions_attempted, correct_ques, incorrect_ques, total_ques) values ('"+
 					resultResponse.getTest_id() +"' , '" +userDetails.getUsername() + "' , '"+userDetails.getEmail() + "' , '"+userDetails.getMobile() + "' , '"+resultResponse.getMarks_scored() + "' , '"+
-					resultResponse.getTime_taken() + "' , '"+resultResponse.getRank() + "' , '"+resultResponse.getQues_attempted()+ "' , '"+resultResponse.getCorrect_ques()+ "' , '"+resultResponse.getIncorrect_ques() + "')";
+					resultResponse.getTime_taken() + "' , '"+resultResponse.getRank() + "' , '"+resultResponse.getQues_attempted()+ "' , '"+resultResponse.getCorrect_ques()+ "' , '"+resultResponse.getIncorrect_ques()+ "' , '"+no_of_ques + "')";
 		return insertTestReport;
 	}
 	public static String findRank(int marks_scored, int test_id) {
@@ -205,9 +205,9 @@ public class CreateTestQueries {
 		return query;
 	}
 	
-	public static String insertTestQuestionReport(int test_id, String username, QuestionDetail question) {
-		String insertQuestionReport = "INSERT into testquestionreport (test_id, ques_id, user_id, correct, time_spent, correct_option, marked_option, explanation) values ('"+
-					test_id +"' , '" +question.getQues_id() + "' , '"+username + "' , '"+question.getCorrect() + "' , '"+question.getTime_spent()+ "' , '"+question.getCorrect_option()+ "' , '"+question.getMarked_option()+ "' , '"+question.getExplanation() + "')";
+	public static String insertTestQuestionReport(int test_id, String username, QuestionDetail question, int lastReportId) {
+		String insertQuestionReport = "INSERT into testquestionreport (test_id, ques_id, user_id, correct, time_spent, correct_option, marked_option, explanation, test_report_id) values ('"+
+					test_id +"' , '" +question.getQues_id() + "' , '"+username + "' , '"+question.getCorrect() + "' , '"+question.getTime_spent()+ "' , '"+question.getCorrect_option()+ "' , '"+question.getMarked_option()+ "' , '"+question.getExplanation()+ "' , '"+lastReportId + "')";
 		return insertQuestionReport;
 	}
 	public static String getTestImagePath(int cat_id){
@@ -221,5 +221,13 @@ public class CreateTestQueries {
 	public static String checkSubcategoryExists(String subcategory){
 		String query = "SELECT * FROM examsubcategory WHERE subcategory = '" + subcategory + "'";
 		return query;
+	}
+	public static String checkAlreadyAttempted(int test_id, String email_id){
+		String query = "SELECT * FROM testreports WHERE test_id = '"+ test_id +"' AND emailid = '" + email_id+"'";
+		return query;
+	}
+	public static String getLastInsertReportId(){
+		String last_insert_id = "select last_insert_id() as last_id from testreports";
+		return last_insert_id;
 	}
 }
