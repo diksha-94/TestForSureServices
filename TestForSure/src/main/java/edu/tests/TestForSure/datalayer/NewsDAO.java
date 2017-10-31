@@ -2,6 +2,7 @@ package edu.tests.TestForSure.datalayer;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -35,7 +36,16 @@ public class NewsDAO {
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
 		}
-		
+		finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
+		}
 		return response;
 	}
 	
@@ -62,7 +72,16 @@ public class NewsDAO {
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
 		}
-		
+		finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
+		}
 		return response;
 	}
 	
@@ -88,6 +107,15 @@ public class NewsDAO {
 			System.out.println("Exception from DAO: "+e.getMessage());
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		
 		return response;
@@ -121,6 +149,14 @@ public class NewsDAO {
 		catch(Exception e){
 			System.out.println("Exception from DAO: "+e.getMessage());
 			response.setResponse(new CommonResponse(false, e.getMessage()));
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setResponse(new CommonResponse(false, e.getMessage()));
+			}
 		}
 		
 		return response;
@@ -156,6 +192,14 @@ public class NewsDAO {
 		catch(Exception e){
 			System.out.println("Exception from DAO: "+e.getMessage());
 			response.setResponse(new CommonResponse(false, e.getMessage()));
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setResponse(new CommonResponse(false, e.getMessage()));
+			}
 		}
 		
 		return response;

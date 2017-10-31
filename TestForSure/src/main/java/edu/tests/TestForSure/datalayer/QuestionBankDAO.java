@@ -2,6 +2,7 @@ package edu.tests.TestForSure.datalayer;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -44,6 +45,15 @@ public class QuestionBankDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO: "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		
 		return response;
@@ -73,6 +83,15 @@ public class QuestionBankDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO: "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setSuccess(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		
 		return response;
@@ -112,6 +131,15 @@ public class QuestionBankDAO {
 			System.out.println("Exception from DAO : "+e.getMessage());
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -148,6 +176,15 @@ public class QuestionBankDAO {
 			System.out.println("Exception from DAO : "+e.getMessage());
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -220,6 +257,15 @@ public class QuestionBankDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -243,6 +289,14 @@ public class QuestionBankDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Exception from DAO : "+e.getMessage());
+			}
 		}
 		
 		return category;
@@ -267,6 +321,14 @@ public class QuestionBankDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Exception from DAO : "+e.getMessage());
+			}
 		}
 		
 		return subcategory;
@@ -297,6 +359,15 @@ public class QuestionBankDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -324,6 +395,15 @@ public class QuestionBankDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -352,6 +432,15 @@ public class QuestionBankDAO {
 			System.out.println("Exception from DAO : "+e.getMessage());
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -416,6 +505,16 @@ public class QuestionBankDAO {
 				response.setMessage(e.getMessage());
 			}
 		}
+		
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
+		
 		
 		return response;
 	}

@@ -49,6 +49,15 @@ public class TestDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO: "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		
 		return response;
@@ -78,6 +87,15 @@ public class TestDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO: "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setSuccess(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		
 		return response;
@@ -118,6 +136,14 @@ public class TestDAO {
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
 			return 0;
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Exception from DAO : "+e.getMessage());
+			}
 		}
 	}
 	
@@ -156,6 +182,14 @@ public class TestDAO {
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
 			return "0";
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Exception from DAO : "+e.getMessage());
+			}
 		}
 	}
 	
@@ -214,6 +248,15 @@ public class TestDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -276,6 +319,15 @@ public class TestDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -334,6 +386,15 @@ public class TestDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -379,6 +440,15 @@ public class TestDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -425,6 +495,15 @@ public class TestDAO {
 			System.out.println("Exception from DAO : "+e.getMessage());
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -471,6 +550,15 @@ public class TestDAO {
 			System.out.println("Exception from DAO : "+e.getMessage());
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -499,6 +587,15 @@ public class TestDAO {
 			System.out.println("Exception from DAO : "+e.getMessage());
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -527,6 +624,15 @@ public class TestDAO {
 			System.out.println("Exception from DAO : "+e.getMessage());
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -555,6 +661,15 @@ public class TestDAO {
 			System.out.println("Exception from DAO : "+e.getMessage());
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -591,8 +706,16 @@ public class TestDAO {
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
 			response.setStatus(false);
-			response.setMessage(e.getMessage());
-			
+			response.setMessage(e.getMessage());	
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -628,6 +751,14 @@ public class TestDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Exception from DAO : "+e.getMessage());
+			}
 		}
 		return testDetails;
 	}
@@ -666,6 +797,15 @@ public class TestDAO {
 			System.out.println("Exception from DAO : "+e.getMessage());
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -696,6 +836,15 @@ public class TestDAO {
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
 			rank = 0;
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Exception from DAO : "+e.getMessage());
+				rank = 0;
+			}
 		}
 		return rank;
 	}
@@ -722,6 +871,15 @@ public class TestDAO {
 			System.out.println("Exception from DAO : "+e.getMessage());
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -755,7 +913,14 @@ public class TestDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
-			
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Exception from DAO : "+e.getMessage());
+			}
 		}
 		return total_candidate;
 	}
@@ -788,6 +953,14 @@ public class TestDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Exception from DAO : "+e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -819,6 +992,14 @@ public class TestDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO : "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Exception from DAO : "+e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -850,6 +1031,15 @@ public class TestDAO {
 			System.out.println("Exception from DAO : "+e.getMessage());
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
 		}
 		return response;
 	}
@@ -871,6 +1061,14 @@ public class TestDAO {
 		}
 		catch(Exception e){
 			System.out.println("Exception from DAO: "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Exception from DAO: "+e.getMessage());
+			}
 		}
 		
 		return response;
@@ -895,6 +1093,15 @@ public class TestDAO {
 		catch(Exception e){
 			System.out.println("Exception from DAO: "+e.getMessage());
 			response = false;
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Exception from DAO: "+e.getMessage());
+				response = false;
+			}
 		}
 		
 		return response;
