@@ -10,7 +10,7 @@ public class CreateNewsQueries {
 	}
 	
 	public static String getNewsAll(){
-		String getNewsAll = "SELECT id, headline FROM newsandnotifications";
+		String getNewsAll = "SELECT id, headline, detail FROM newsandnotifications";
 		return getNewsAll;
 	}
 	

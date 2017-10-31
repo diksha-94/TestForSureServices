@@ -387,29 +387,38 @@ public class TestDAO {
 		System.out.println("Calling DAO");
 		CommonResponse response = new CommonResponse();
 		Connection conn = DBConnection.getDBConnection();
-		String query = CreateTestQueries.addNewExamCategory(category);
-		
+		String query = CreateTestQueries.existingExamCategory(category);
+		ResultSet rs = null;
 		System.out.println("Query: "+query);
 		int result = 0;
 		try{
 			Statement statement = conn.createStatement();
-			result = statement.executeUpdate(query);
-			if(result>0){
-				response.setStatus(true);
-				query = CreateTestQueries.getLastInsertIdCategoryQueryBuilder();
-				ResultSet rs = statement.executeQuery(query);
-				int id = 0;
-				if(rs.isBeforeFirst()){
-					while(rs.next()){
-						id = rs.getInt(1);
-					}
-				}
+			rs = statement.executeQuery(query);
 				
-				response.setMessage("New exam Category added successfully-"+id);
+			if(rs.isBeforeFirst()){
+				response.setStatus(false);
+				response.setMessage("Exam category "+category+" already exists.");
 			}
 			else{
-				response.setStatus(false);
-				response.setMessage("Error in adding exam category");
+				query = CreateTestQueries.addNewExamCategory(category);
+				statement = conn.createStatement();
+				result = statement.executeUpdate(query);
+				if(result>0){
+					response.setStatus(true);
+					query = CreateTestQueries.getLastInsertIdCategoryQueryBuilder();
+					rs = statement.executeQuery(query);
+					int id = 0;
+					if(rs.isBeforeFirst()){
+						while(rs.next()){
+							id = rs.getInt(1);
+						}
+					}
+					response.setMessage("New exam Category added successfully-"+id);
+				}
+				else{
+					response.setStatus(false);
+					response.setMessage("Error in adding exam category");
+				}
 			}
 		}
 		catch(Exception e){
@@ -424,29 +433,38 @@ public class TestDAO {
 		System.out.println("Calling DAO");
 		CommonResponse response = new CommonResponse();
 		Connection conn = DBConnection.getDBConnection();
-		String query = CreateTestQueries.addNewExamSubcategory(cat_id, subcategory);
-		
+		String query = CreateTestQueries.existingExamSubcategory(cat_id, subcategory);
+		ResultSet rs = null;
 		System.out.println("Query: "+query);
 		int result = 0;
 		try{
 			Statement statement = conn.createStatement();
-			result = statement.executeUpdate(query);
-			if(result>0){
-				response.setStatus(true);
-				query = CreateTestQueries.getLastInsertIdSubcategoryQueryBuilder();
-				ResultSet rs = statement.executeQuery(query);
-				int id = 0;
-				if(rs.isBeforeFirst()){
-					while(rs.next()){
-						id = rs.getInt(1);
-					}
-				}
+			rs = statement.executeQuery(query);
 				
-				response.setMessage("New exam subcategory added successfully-"+id);
+			if(rs.isBeforeFirst()){
+				response.setStatus(false);
+				response.setMessage("Exam category "+subcategory+" already exists.");
 			}
 			else{
-				response.setStatus(false);
-				response.setMessage("Error in adding exam subcategory");
+				query = CreateTestQueries.addNewExamSubcategory(cat_id, subcategory);
+				statement = conn.createStatement();
+				result = statement.executeUpdate(query);
+				if(result>0){
+					response.setStatus(true);
+					query = CreateTestQueries.getLastInsertIdSubcategoryQueryBuilder();
+					rs = statement.executeQuery(query);
+					int id = 0;
+					if(rs.isBeforeFirst()){
+						while(rs.next()){
+							id = rs.getInt(1);
+						}
+					}
+					response.setMessage("New exam Subcategory added successfully-"+id);
+				}
+				else{
+					response.setStatus(false);
+					response.setMessage("Error in adding exam subcategory");
+				}
 			}
 		}
 		catch(Exception e){

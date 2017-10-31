@@ -142,6 +142,7 @@ public class NewsDAO {
 					news = new NewsAndNotifications();
 					news.setId(result.getInt(1));
 					news.setHeadline(result.getString(2));
+					news.setDetail(result.getString(3));
 					list.add(news);
 				}
 				

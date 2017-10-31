@@ -125,12 +125,19 @@ public class CreateTestQueries {
 		String addCategory = "INSERT into examcategory (category) values ('" + category +"')";
 		return addCategory;
 	}
+	public static String existingExamCategory(String category) {
+		String existingCategory = "SELECT * FROM examcategory where category = '" + category +"'";
+		return existingCategory;
+	}
 	
 	public static String addNewExamSubcategory(int cat_id, String subcategory) {
 		String addSubcategory = "INSERT into examsubcategory (cat_id, subcategory) values ('" + cat_id +"', '"+ subcategory+"')";
 		return addSubcategory;
 	}
-	
+	public static String existingExamSubcategory(int cat_id, String subcategory) {
+		String existingSubcategory = "SELECT * FROM examsubcategory WHERE cat_id ='" + cat_id +"' AND subcategory = '"+ subcategory+"'";
+		return existingSubcategory;
+	}
 	public static String deleteQuestion(String id, int test_id) {
 		String deleteQuestion = "UPDATE questions SET active = 'false' WHERE id = '"+ id +"' AND test_id = '" + test_id+"'";
 		return deleteQuestion;
