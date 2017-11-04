@@ -453,7 +453,7 @@ public class TestDAO {
 		return response;
 	}
 	
-	public static CommonResponse addnewCategory(String category){
+	public static CommonResponse addnewCategory(String category, String imagePath){
 		System.out.println("Calling DAO");
 		CommonResponse response = new CommonResponse();
 		Connection conn = DBConnection.getDBConnection();
@@ -470,7 +470,7 @@ public class TestDAO {
 				response.setMessage("Exam category "+category+" already exists.");
 			}
 			else{
-				query = CreateTestQueries.addNewExamCategory(category);
+				query = CreateTestQueries.addNewExamCategory(category, imagePath);
 				statement = conn.createStatement();
 				result = statement.executeUpdate(query);
 				if(result>0){

@@ -121,8 +121,8 @@ public class CreateTestQueries {
 		return getTestDetails;
 	}
 	
-	public static String addNewExamCategory(String category) {
-		String addCategory = "INSERT into examcategory (category) values ('" + category +"')";
+	public static String addNewExamCategory(String category, String imagePath) {
+		String addCategory = "INSERT into examcategory (category, imagePath) values ('" + category +"','"+imagePath+"')";
 		return addCategory;
 	}
 	public static String existingExamCategory(String category) {

@@ -179,7 +179,7 @@ public class TestServices {
 		CommonResponse response = null;
 		
 		try{
-			response = TestDAO.addnewCategory(examCategory.getCategory());
+			response = TestDAO.addnewCategory(examCategory.getCategory(), examCategory.getImagePath());
 		}
 		catch(Exception e){
 			System.out.println("Exception in service: "+e.getMessage());
@@ -312,7 +312,7 @@ public class TestServices {
 				System.out.println("Error in updated the total number of candidates");
 			}
 			resultResponse.setTotal_candidate(total_candidate);
-			resultResponse.setUsername(getTestResult.getUserDetails().getEmail());
+			resultResponse.setUsername(getTestResult.getUserDetails().getUsername());
 			
 			ArrayList<TopPerformers> list = TestDAO.getTopPerformers(test_id);
 			resultResponse.setTopPerformers(list);
