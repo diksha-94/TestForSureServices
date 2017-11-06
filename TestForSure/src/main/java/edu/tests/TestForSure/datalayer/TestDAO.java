@@ -810,7 +810,7 @@ public class TestDAO {
 		return response;
 	}
 	
-	public static int findUserRank(int marks_scored, int test_id){
+	public static int findUserRank(float marks_scored, int test_id){
 		System.out.println("Calling DAO");
 		Connection conn = DBConnection.getDBConnection();
 		String query = "";

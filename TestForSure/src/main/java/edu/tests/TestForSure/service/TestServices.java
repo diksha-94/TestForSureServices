@@ -276,7 +276,7 @@ public class TestServices {
 			resultResponse.setTest_id(testDetails.getId());
 			resultResponse.setTotal_ques(testDetails.getNo_of_ques());
 			resultResponse.setTotal_marks(testDetails.getNo_of_ques()*testDetails.getCorrect_ques_marks());
-			int marksScored = (resultResponse.getCorrect_ques()*testDetails.getCorrect_ques_marks())-(resultResponse.getIncorrect_ques()*testDetails.getNegative_marks());
+			float marksScored = (resultResponse.getCorrect_ques()*testDetails.getCorrect_ques_marks())-(resultResponse.getIncorrect_ques()*testDetails.getNegative_marks());
 			resultResponse.setMarks_scored(marksScored);
 			//Finding the candidate's rank
 			int rank = GeneralFunctionality.findCandidateRank(marksScored, test_id);

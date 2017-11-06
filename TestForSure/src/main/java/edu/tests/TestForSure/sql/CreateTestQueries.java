@@ -175,7 +175,7 @@ public class CreateTestQueries {
 					resultResponse.getTime_taken() + "' , '"+resultResponse.getRank() + "' , '"+resultResponse.getQues_attempted()+ "' , '"+resultResponse.getCorrect_ques()+ "' , '"+resultResponse.getIncorrect_ques()+ "' , '"+no_of_ques + "')";
 		return insertTestReport;
 	}
-	public static String findRank(int marks_scored, int test_id) {
+	public static String findRank(float marks_scored, int test_id) {
 		String findRank = "SELECT id FROM testReports WHERE marks_scored >= '" + marks_scored + "' AND test_id = '" + test_id + "'";
 		return findRank;
 	}
