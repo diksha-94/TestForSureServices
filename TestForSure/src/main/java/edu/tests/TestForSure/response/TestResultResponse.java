@@ -11,7 +11,7 @@ public class TestResultResponse {
 	private int correct_ques;
 	private int incorrect_ques;
 	private int total_marks;
-	private float marks_scored;
+	private Double marks_scored;
 	private int rank;
 	private Double time_taken;
 	private int total_candidate;
@@ -60,10 +60,10 @@ public class TestResultResponse {
 	public void setTotal_marks(int total_marks) {
 		this.total_marks = total_marks;
 	}
-	public float getMarks_scored() {
+	public Double getMarks_scored() {
 		return marks_scored;
 	}
-	public void setMarks_scored(float marks_scored) {
+	public void setMarks_scored(Double marks_scored) {
 		this.marks_scored = marks_scored;
 	}
 	public int getRank() {
@@ -143,7 +143,7 @@ public class TestResultResponse {
 				+ avgScore + ", avgTime=" + avgTime+ ",topPerformers=" + topPerformers + "]";
 	}
 	public TestResultResponse(int test_id, int total_ques, int ques_attempted, int correct_ques, int incorrect_ques,
-			int total_marks, float marks_scored, int rank, Double time_taken, ArrayList<QuestionDetail> question_details, CommonResponse common_response,
+			int total_marks, Double marks_scored, int rank, Double time_taken, ArrayList<QuestionDetail> question_details, CommonResponse common_response,
 			int total_candidate, String username, int topperScore, double topperTime, double avgScore, double avgTime, ArrayList<TopPerformers> topPerformers) {
 		super();
 		this.test_id = test_id;

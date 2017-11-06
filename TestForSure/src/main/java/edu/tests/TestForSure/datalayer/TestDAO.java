@@ -233,7 +233,7 @@ public class TestDAO {
 					testDetails.setNo_of_ques(rs.getInt(5));
 					testDetails.setTime_limit(rs.getInt(6));
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
-					testDetails.setNegative_marks(rs.getInt(8));
+					testDetails.setNegative_marks(rs.getBigDecimal(8));
 					testDetails.setActive(rs.getBoolean(9));
 					list.add(testDetails);
 				}
@@ -301,7 +301,7 @@ public class TestDAO {
 					testDetails.setNo_of_ques(rs.getInt(5));
 					testDetails.setTime_limit(rs.getInt(6));
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
-					testDetails.setNegative_marks(rs.getInt(8));
+					testDetails.setNegative_marks(rs.getBigDecimal(8));
 					
 					String imagePath = TestDAO.getTestImagePathDAO(testDetails.getCat_id());
 					
@@ -356,7 +356,7 @@ public class TestDAO {
 					testDetails.setNo_of_ques(rs.getInt(5));
 					testDetails.setTime_limit(rs.getInt(6));
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
-					testDetails.setNegative_marks(rs.getInt(8));
+					testDetails.setNegative_marks(rs.getBigDecimal(8));
 				}
 				
 				response.setTestDetails(testDetails);
@@ -741,7 +741,7 @@ public class TestDAO {
 					testDetails.setNo_of_ques(rs.getInt(5));
 					testDetails.setTime_limit(rs.getInt(6));
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
-					testDetails.setNegative_marks(rs.getInt(8));
+					testDetails.setNegative_marks(rs.getBigDecimal(8));
 					testDetails.setActive(rs.getBoolean(9));
 				}
 			}
@@ -810,7 +810,7 @@ public class TestDAO {
 		return response;
 	}
 	
-	public static int findUserRank(float marks_scored, int test_id){
+	public static int findUserRank(Double marks_scored, int test_id){
 		System.out.println("Calling DAO");
 		Connection conn = DBConnection.getDBConnection();
 		String query = "";

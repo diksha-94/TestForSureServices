@@ -1,5 +1,7 @@
 package edu.tests.TestForSure.entity;
 
+import java.math.BigDecimal;
+
 public class TestDetails {
 	private int id;
 	private int cat_id;
@@ -8,7 +10,7 @@ public class TestDetails {
 	private int no_of_ques;
 	private int time_limit;
 	private int correct_ques_marks;
-	private float negative_marks;
+	private BigDecimal negative_marks;
 	private Boolean active;
 	private String imagePath;
 	public int getId() {
@@ -53,10 +55,10 @@ public class TestDetails {
 	public void setCorrect_ques_marks(int correct_ques_marks) {
 		this.correct_ques_marks = correct_ques_marks;
 	}
-	public float getNegative_marks() {
+	public BigDecimal getNegative_marks() {
 		return negative_marks;
 	}
-	public void setNegative_marks(float negative_marks) {
+	public void setNegative_marks(BigDecimal negative_marks) {
 		this.negative_marks = negative_marks;
 	}
 	public Boolean getActive() {
@@ -78,7 +80,7 @@ public class TestDetails {
 				+ correct_ques_marks + ", negative_marks=" + negative_marks + ", active=" + active + ", imagePath=" + imagePath + "]";
 	}
 	public TestDetails(int id, int cat_id, int subcat_id, String testTitle, int no_of_ques, int time_limit,
-			int correct_ques_marks, float negative_marks, Boolean active, String imagePath) {
+			int correct_ques_marks, BigDecimal negative_marks, Boolean active, String imagePath) {
 		super();
 		this.id = id;
 		this.cat_id = cat_id;

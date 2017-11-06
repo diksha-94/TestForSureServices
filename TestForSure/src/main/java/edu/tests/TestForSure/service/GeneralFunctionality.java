@@ -91,7 +91,7 @@ public class GeneralFunctionality {
 		CommonResponse response = TestDAO.insertTestReport(resultResponse, userDetails, no_of_ques);
 		return response;
 	}
-	public static int findCandidateRank(float marks_scored, int test_id){
+	public static int findCandidateRank(Double marks_scored, int test_id){
 		int rank = TestDAO.findUserRank(marks_scored, test_id);
 		return rank;
 	}
