@@ -1,13 +1,15 @@
 package edu.tests.TestForSure.entity;
 
+import java.math.BigDecimal;
+
 public class TestReports {
 	private int id;
 	private int test_id;
 	private String username;
 	private String emailid;
 	private Long mobile_number;
-	private int marks_scored;
-	private Double time_taken;
+	private BigDecimal marks_scored;
+	private BigDecimal time_taken;
 	private int rank;
 	private int questions_attempted;
 	private int correct_ques;
@@ -43,16 +45,16 @@ public class TestReports {
 	public void setMobile_number(Long mobile_number) {
 		this.mobile_number = mobile_number;
 	}
-	public int getMarks_scored() {
+	public BigDecimal getMarks_scored() {
 		return marks_scored;
 	}
-	public void setMarks_scored(int marks_scored) {
+	public void setMarks_scored(BigDecimal marks_scored) {
 		this.marks_scored = marks_scored;
 	}
-	public Double getTime_taken() {
+	public BigDecimal getTime_taken() {
 		return time_taken;
 	}
-	public void setTime_taken(Double time_taken) {
+	public void setTime_taken(BigDecimal time_taken) {
 		this.time_taken = time_taken;
 	}
 	public int getRank() {
@@ -85,8 +87,8 @@ public class TestReports {
 	public void setTotal_ques(int total_ques) {
 		this.total_ques = total_ques;
 	}
-	public TestReports(int id, int test_id, String username, String emailid, Long mobile_number, int marks_scored,
-			Double time_taken, int rank, int questions_attempted, int correct_ques, int incorrect_ques, int total_ques) {
+	public TestReports(int id, int test_id, String username, String emailid, Long mobile_number, BigDecimal marks_scored,
+			BigDecimal time_taken, int rank, int questions_attempted, int correct_ques, int incorrect_ques, int total_ques) {
 		super();
 		this.id = id;
 		this.test_id = test_id;

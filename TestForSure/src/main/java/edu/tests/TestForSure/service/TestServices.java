@@ -1,5 +1,8 @@
 package edu.tests.TestForSure.service;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
 import java.util.ArrayList;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -271,13 +274,13 @@ public class TestServices {
 			
 			//Generate Test Report
 			resultResponse = GeneralFunctionality.generateTestReport(getTestResult.getResult(), questionAnswers);
-			resultResponse.setTime_taken(testDetails.getTime_limit() - getTestResult.getTime_rem());
+			resultResponse.setTime_taken((testDetails.getTime_limit()).subtract(getTestResult.getTime_rem()));
 			System.out.println("Time taken: "+resultResponse.getTime_taken());
 			resultResponse.setTest_id(testDetails.getId());
 			resultResponse.setTotal_ques(testDetails.getNo_of_ques());
 			resultResponse.setTotal_marks(testDetails.getNo_of_ques()*testDetails.getCorrect_ques_marks());
-			double marksScored = (resultResponse.getCorrect_ques()*testDetails.getCorrect_ques_marks())-(resultResponse.getIncorrect_ques()*(testDetails.getNegative_marks()).doubleValue());
-			resultResponse.setMarks_scored(marksScored);
+			Double marksScored = (resultResponse.getCorrect_ques()*testDetails.getCorrect_ques_marks())-(resultResponse.getIncorrect_ques()*(testDetails.getNegative_marks()).doubleValue());
+			resultResponse.setMarks_scored(new BigDecimal(marksScored, MathContext.DECIMAL64));
 			//Finding the candidate's rank
 			int rank = GeneralFunctionality.findCandidateRank(marksScored, test_id);
 			if(rank == 0){

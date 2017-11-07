@@ -37,8 +37,8 @@ public class TestReportDAO {
 					report.setUsername(rs.getString(3));
 					report.setEmailid(rs.getString(4));
 					report.setMobile_number(rs.getLong(5));
-					report.setMarks_scored(rs.getInt(6));
-					report.setTime_taken(rs.getDouble(7));
+					report.setMarks_scored(rs.getBigDecimal(6));
+					report.setTime_taken(rs.getBigDecimal(7));
 					report.setRank(rs.getInt(8));
 					report.setQuestions_attempted(rs.getInt(9));
 					report.setCorrect_ques(rs.getInt(10));

@@ -1,5 +1,6 @@
 package edu.tests.TestForSure.response;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import edu.tests.TestForSure.entity.TopPerformers;
@@ -11,14 +12,14 @@ public class TestResultResponse {
 	private int correct_ques;
 	private int incorrect_ques;
 	private int total_marks;
-	private Double marks_scored;
+	private BigDecimal marks_scored;
 	private int rank;
-	private Double time_taken;
+	private BigDecimal time_taken;
 	private int total_candidate;
-	private int topperScore;
-	private double topperTime;
-	private double avgScore;
-	private double avgTime;
+	private BigDecimal topperScore;
+	private BigDecimal topperTime;
+	private Double avgScore;
+	private Double avgTime;
 	private String username;
 	private ArrayList<QuestionDetail> question_details;
 	private ArrayList<TopPerformers> topPerformers;
@@ -60,10 +61,10 @@ public class TestResultResponse {
 	public void setTotal_marks(int total_marks) {
 		this.total_marks = total_marks;
 	}
-	public Double getMarks_scored() {
+	public BigDecimal getMarks_scored() {
 		return marks_scored;
 	}
-	public void setMarks_scored(Double marks_scored) {
+	public void setMarks_scored(BigDecimal marks_scored) {
 		this.marks_scored = marks_scored;
 	}
 	public int getRank() {
@@ -72,10 +73,10 @@ public class TestResultResponse {
 	public void setRank(int rank) {
 		this.rank = rank;
 	}
-	public Double getTime_taken() {
+	public BigDecimal getTime_taken() {
 		return time_taken;
 	}
-	public void setTime_taken(Double time_taken) {
+	public void setTime_taken(BigDecimal time_taken) {
 		this.time_taken = time_taken;
 	}
 	public ArrayList<QuestionDetail> getQuestion_details() {
@@ -108,28 +109,28 @@ public class TestResultResponse {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public int getTopperScore() {
+	public BigDecimal getTopperScore() {
 		return topperScore;
 	}
-	public void setTopperScore(int topperScore) {
+	public void setTopperScore(BigDecimal topperScore) {
 		this.topperScore = topperScore;
 	}
-	public double getTopperTime() {
+	public BigDecimal getTopperTime() {
 		return topperTime;
 	}
-	public void setTopperTime(double topperTime) {
+	public void setTopperTime(BigDecimal topperTime) {
 		this.topperTime = topperTime;
 	}
-	public double getAvgScore() {
+	public Double getAvgScore() {
 		return avgScore;
 	}
-	public void setAvgScore(double avgScore) {
+	public void setAvgScore(Double avgScore) {
 		this.avgScore = avgScore;
 	}
-	public double getAvgTime() {
+	public Double getAvgTime() {
 		return avgTime;
 	}
-	public void setAvgTime(double avgTime) {
+	public void setAvgTime(Double avgTime) {
 		this.avgTime = avgTime;
 	}
 	
@@ -143,8 +144,8 @@ public class TestResultResponse {
 				+ avgScore + ", avgTime=" + avgTime+ ",topPerformers=" + topPerformers + "]";
 	}
 	public TestResultResponse(int test_id, int total_ques, int ques_attempted, int correct_ques, int incorrect_ques,
-			int total_marks, Double marks_scored, int rank, Double time_taken, ArrayList<QuestionDetail> question_details, CommonResponse common_response,
-			int total_candidate, String username, int topperScore, double topperTime, double avgScore, double avgTime, ArrayList<TopPerformers> topPerformers) {
+			int total_marks, BigDecimal marks_scored, int rank, BigDecimal time_taken, ArrayList<QuestionDetail> question_details, CommonResponse common_response,
+			int total_candidate, String username, BigDecimal topperScore, BigDecimal topperTime, Double avgScore, Double avgTime, ArrayList<TopPerformers> topPerformers) {
 		super();
 		this.test_id = test_id;
 		this.total_ques = total_ques;

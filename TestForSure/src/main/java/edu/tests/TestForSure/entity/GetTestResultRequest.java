@@ -1,10 +1,11 @@
 package edu.tests.TestForSure.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class GetTestResultRequest {
 	private UserDetails userDetails;
-	private Double time_rem;
+	private BigDecimal time_rem;
 	private TestId testDetails;
 	private ArrayList<Result> result;
 	public TestId getTestDetails() {
@@ -13,10 +14,10 @@ public class GetTestResultRequest {
 	public void setTestDetails(TestId testDetails) {
 		this.testDetails = testDetails;
 	}
-	public Double getTime_rem() {
+	public BigDecimal getTime_rem() {
 		return time_rem;
 	}
-	public void setTime_rem(Double time_rem) {
+	public void setTime_rem(BigDecimal time_rem) {
 		this.time_rem = time_rem;
 	}
 	public ArrayList<Result> getResult() {
@@ -35,7 +36,7 @@ public class GetTestResultRequest {
 	public String toString() {
 		return "GetTestResultRequest [testDetails=" + testDetails + ", result=" + result + ", userDetails=" + userDetails +",time_rem=" + time_rem + "]";
 	}
-	public GetTestResultRequest(UserDetails userDetails, Double time_rem, TestId testDetails, ArrayList<Result> result) {
+	public GetTestResultRequest(UserDetails userDetails, BigDecimal time_rem, TestId testDetails, ArrayList<Result> result) {
 		super();
 		this.userDetails = userDetails;
 		this.time_rem = time_rem;

@@ -1,5 +1,6 @@
 package edu.tests.TestForSure.datalayer;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
 
@@ -231,10 +232,10 @@ public class TestDAO {
 					testDetails.setSubcat_id(rs.getInt(3));
 					testDetails.setTestTitle(rs.getString(4));
 					testDetails.setNo_of_ques(rs.getInt(5));
-					testDetails.setTime_limit(rs.getInt(6));
+					testDetails.setTime_limit(rs.getBigDecimal(6));
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
 					testDetails.setNegative_marks(rs.getBigDecimal(8));
-					testDetails.setActive(rs.getBoolean(9));
+					testDetails.setActive(rs.getBoolean(13));
 					list.add(testDetails);
 				}
 				response.setTestDetails(list);
@@ -299,7 +300,7 @@ public class TestDAO {
 					testDetails.setSubcat_id(rs.getInt(3));
 					testDetails.setTestTitle(rs.getString(4));
 					testDetails.setNo_of_ques(rs.getInt(5));
-					testDetails.setTime_limit(rs.getInt(6));
+					testDetails.setTime_limit(rs.getBigDecimal(6));
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
 					testDetails.setNegative_marks(rs.getBigDecimal(8));
 					
@@ -354,7 +355,7 @@ public class TestDAO {
 					testDetails.setSubcat_id(rs.getInt(3));
 					testDetails.setTestTitle(rs.getString(4));
 					testDetails.setNo_of_ques(rs.getInt(5));
-					testDetails.setTime_limit(rs.getInt(6));
+					testDetails.setTime_limit(rs.getBigDecimal(6));
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
 					testDetails.setNegative_marks(rs.getBigDecimal(8));
 				}
@@ -739,7 +740,7 @@ public class TestDAO {
 					testDetails.setSubcat_id(rs.getInt(3));
 					testDetails.setTestTitle(rs.getString(4));
 					testDetails.setNo_of_ques(rs.getInt(5));
-					testDetails.setTime_limit(rs.getInt(6));
+					testDetails.setTime_limit(rs.getBigDecimal(6));
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
 					testDetails.setNegative_marks(rs.getBigDecimal(8));
 					testDetails.setActive(rs.getBoolean(9));
@@ -942,8 +943,8 @@ public class TestDAO {
 					topPerformers = new TopPerformers();
 					topPerformers.setName(rs.getString(1));
 					topPerformers.setRank(rs.getInt(2));
-					topPerformers.setMarks_scored(rs.getInt(3));
-					topPerformers.setTime_taken(rs.getInt(4));
+					topPerformers.setMarks_scored(rs.getBigDecimal(3));
+					topPerformers.setTime_taken(rs.getBigDecimal(4));
 					response.add(topPerformers);
 				}
 			}
@@ -971,20 +972,20 @@ public class TestDAO {
 		query = CreateTestQueries.getAverage(testId);
 		System.out.println("Query: "+query);
 		ResultSet rs = null;
-		int marks_scored = 0;
+		BigDecimal marks_scored = new BigDecimal(0);
 		int count = 0;
-		int time_taken = 0;
+		BigDecimal time_taken = new BigDecimal(0);
 		try{
 			Statement statement = conn.createStatement();
 			rs = statement.executeQuery(query);
 			if(rs.isBeforeFirst()){
 				while(rs.next()){
-					marks_scored+=rs.getInt(1);
-					time_taken+=rs.getInt(2);
+					marks_scored = marks_scored.add(rs.getBigDecimal(1));
+					time_taken = time_taken.add(rs.getBigDecimal(2));
 					count++;
 				}
-				response.setAvgScore(marks_scored/count);
-				response.setAvgTime(time_taken/count);
+				response.setAvgScore(round((((marks_scored).doubleValue())/count),2));
+				response.setAvgTime(round((((time_taken).doubleValue())/count),2));
 			}
 			else{
 				System.out.println("No records found");
@@ -1003,7 +1004,14 @@ public class TestDAO {
 		}
 		return response;
 	}
-	
+	public static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    long factor = (long) Math.pow(10, places);
+	    value = value * factor;
+	    long tmp = Math.round(value);
+	    return (double) tmp / factor;
+	}
 	public static CommonResponse insertTestQuestionsReport(TestResultResponse resultResponse, int lastReportId){
 		System.out.println("Calling DAO");
 		CommonResponse response = new CommonResponse();

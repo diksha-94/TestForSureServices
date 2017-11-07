@@ -8,7 +8,7 @@ public class TestDetails {
 	private int subcat_id;
 	private String testTitle;
 	private int no_of_ques;
-	private int time_limit;
+	private BigDecimal time_limit;
 	private int correct_ques_marks;
 	private BigDecimal negative_marks;
 	private Boolean active;
@@ -43,10 +43,10 @@ public class TestDetails {
 	public void setNo_of_ques(int no_of_ques) {
 		this.no_of_ques = no_of_ques;
 	}
-	public int getTime_limit() {
+	public BigDecimal getTime_limit() {
 		return time_limit;
 	}
-	public void setTime_limit(int time_limit) {
+	public void setTime_limit(BigDecimal time_limit) {
 		this.time_limit = time_limit;
 	}
 	public int getCorrect_ques_marks() {
@@ -79,7 +79,7 @@ public class TestDetails {
 				+ ", no_of_ques=" + no_of_ques + ", time_limit=" + time_limit + ", correct_ques_marks="
 				+ correct_ques_marks + ", negative_marks=" + negative_marks + ", active=" + active + ", imagePath=" + imagePath + "]";
 	}
-	public TestDetails(int id, int cat_id, int subcat_id, String testTitle, int no_of_ques, int time_limit,
+	public TestDetails(int id, int cat_id, int subcat_id, String testTitle, int no_of_ques, BigDecimal time_limit,
 			int correct_ques_marks, BigDecimal negative_marks, Boolean active, String imagePath) {
 		super();
 		this.id = id;
