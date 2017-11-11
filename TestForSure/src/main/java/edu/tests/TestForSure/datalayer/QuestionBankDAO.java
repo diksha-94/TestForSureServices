@@ -519,5 +519,75 @@ public class QuestionBankDAO {
 		return response;
 	}
 	
+	//DAO to get all the question id's when adding a new test ,on basis of category id and subcategory id
+	public static ArrayList<String> getAllTestIdsDAO(int cat_id, int subcat_id){
+		System.out.println("Calling get all question id's DAO");
+		Connection conn = DBConnection.getDBConnection();
+		String query = CreateQuestionBankQueries.getTestIds(cat_id, subcat_id);
+		
+		ArrayList<Integer> testIds = new ArrayList<Integer>();
+		ArrayList<String> quesIds = new ArrayList<String>();
+		System.out.println("Query: "+query);
+		ResultSet result = null;
+		try{
+			Statement statement = conn.createStatement();
+			result = statement.executeQuery(query);
+			if(result.isBeforeFirst()){
+				while(result.next()){
+					int testId = result.getInt(1);
+					testIds.add(testId);
+				}
+			}
+			for(Integer i : testIds){
+				ArrayList<String> dummy = getAllQuesIdsDAO(i);
+				for(String str : dummy){
+					quesIds.add(str);
+				}
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO : "+e.getMessage());
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return quesIds;
+	}
+	
+	//DAO to get all the question id's when adding a new test ,on basis of category id and subcategory id
+		public static ArrayList<String> getAllQuesIdsDAO(int test_id){
+			System.out.println("Calling get all question id's DAO");
+			Connection conn = DBConnection.getDBConnection();
+			String query = CreateQuestionBankQueries.getQuesIds(test_id);
+			
+			System.out.println("Query: "+query);
+			ResultSet result = null;
+			ArrayList<String> quesId = new ArrayList<String>();
+			try{
+				Statement statement = conn.createStatement();
+				result = statement.executeQuery(query);
+				if(result.isBeforeFirst()){
+					while(result.next()){
+						quesId.add(result.getString(1));
+					}
+				}
+			}
+			catch(Exception e){
+				System.out.println("Exception from DAO : "+e.getMessage());
+			}finally {
+				try {
+					if (conn != null)
+						conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return quesId;
+		}
+		
 	
 }

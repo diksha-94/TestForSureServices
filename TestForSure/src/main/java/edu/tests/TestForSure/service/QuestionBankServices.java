@@ -1,5 +1,7 @@
 package edu.tests.TestForSure.service;
 
+import java.util.ArrayList;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -150,6 +152,23 @@ public class QuestionBankServices {
 		
 		try{
 			response = QuestionBankDAO.addQuestionsFromQuestionBank(request);
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+		}
+		return response;
+	}
+	@RequestMapping(method = {RequestMethod.GET}, value = "/get-ques-ids")
+	public ArrayList<String> getAllQuesIds( @RequestParam(value = "categoryId", required = true) int categoryId,
+										 @RequestParam(value = "subcategoryId", required = true) int subcategoryId){
+		System.out.println("Calling get all question ids service");
+		System.out.println("CategoryId: "+categoryId);
+		System.out.println("SubcategoryId: "+subcategoryId);
+		
+		ArrayList<String> response = null;
+		
+		try{
+			response = QuestionBankDAO.getAllTestIdsDAO(categoryId, subcategoryId);
 		}
 		catch(Exception e){
 			System.out.println("Exception in service: "+e.getMessage());

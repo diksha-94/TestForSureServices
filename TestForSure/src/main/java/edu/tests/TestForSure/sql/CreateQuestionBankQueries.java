@@ -97,4 +97,16 @@ public class CreateQuestionBankQueries {
 		return update_test_id;
 	}
 	
+	//query to get all the test_id's for particular category id and subcategory id
+	public static String getTestIds(int cat_id, int subcat_id){
+		String get_test_id = "SELECT id from testdetails WHERE cat_id = '" + cat_id + "' and subcat_id = '" + subcat_id +"'";
+		return get_test_id;
+	}
+	
+	//query to get all the question_id's for particular test id
+		public static String getQuesIds(int test_id){
+			String get_ques_id = "SELECT id from questions WHERE test_id = '" + test_id +"' AND active='true'";
+			return get_ques_id;
+		}
+	
 }

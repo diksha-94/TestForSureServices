@@ -136,6 +136,7 @@ public class NewsDAO {
 				while(result.next()){
 					news.setHeadline(result.getString(1));
 					news.setDetail(result.getString(2));
+					news.setActive(result.getBoolean(3));
 					list.add(news);
 				}
 				
@@ -179,6 +180,7 @@ public class NewsDAO {
 					news.setId(result.getInt(1));
 					news.setHeadline(result.getString(2));
 					news.setDetail(result.getString(3));
+					news.setActive(result.getBoolean(4));
 					list.add(news);
 				}
 				
@@ -202,6 +204,122 @@ public class NewsDAO {
 			}
 		}
 		
+		return response;
+	}
+	
+	public static GetNewsResponse getNewsByStatus( Boolean active){
+		System.out.println("Calling DAO");
+		String query = CreateNewsQueries.getNewsByStatus(active);
+		Connection conn = DBConnection.getDBConnection();
+		NewsAndNotifications news = new NewsAndNotifications();
+		ArrayList<NewsAndNotifications> list = new ArrayList<NewsAndNotifications>();
+		GetNewsResponse response = new GetNewsResponse();
+		ResultSet result = null;
+		try{
+			Statement statement = conn.createStatement();
+			result = statement.executeQuery(query);
+			if(result.isBeforeFirst()){
+				while(result.next()){
+					news = new NewsAndNotifications();
+					news.setId(result.getInt(1));
+					news.setHeadline(result.getString(2));
+					news.setDetail(result.getString(3));
+					news.setActive(result.getBoolean(4));
+					list.add(news);
+				}
+				
+				response.setNews(list);
+				response.setResponse(new CommonResponse(true, ""));
+			}
+			else {
+				response.setResponse(new CommonResponse(false, "Error in getting news/notification"));
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO: "+e.getMessage());
+			response.setResponse(new CommonResponse(false, e.getMessage()));
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setResponse(new CommonResponse(false, e.getMessage()));
+			}
+		}
+		
+		return response;
+	}
+	
+	public static CommonResponse publishNews(int newsId){
+		System.out.println("Calling DAO");
+		String query = CreateNewsQueries.publishNews(newsId);
+		Connection conn = DBConnection.getDBConnection();
+		CommonResponse response = new CommonResponse();
+		int result = 0;
+		try{
+			Statement statement = conn.createStatement();
+			result = statement.executeUpdate(query);
+			if(result>0){
+				response.setStatus(true);
+				response.setMessage("News/Notification published successfully");
+			}
+			else {
+				response.setStatus(false);
+				response.setMessage("Error in publishing News/Notification");
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO: "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+		}
+		finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
+		}
+		return response;
+	}
+	
+	public static CommonResponse unpublishNews(int newsId){
+		System.out.println("Calling DAO");
+		String query = CreateNewsQueries.unpublishNews(newsId);
+		Connection conn = DBConnection.getDBConnection();
+		CommonResponse response = new CommonResponse();
+		int result = 0;
+		try{
+			Statement statement = conn.createStatement();
+			result = statement.executeUpdate(query);
+			if(result>0){
+				response.setStatus(true);
+				response.setMessage("News/Notification unpublished successfully");
+			}
+			else {
+				response.setStatus(false);
+				response.setMessage("Error in unpublishing News/Notification");
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO: "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+		}
+		finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
+		}
 		return response;
 	}
 }

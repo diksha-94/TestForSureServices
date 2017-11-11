@@ -30,6 +30,44 @@ public class NewsServices {
 		return response;
 	}
 	
+	@RequestMapping(method = {RequestMethod.GET}, value = "/get-news-bySatatus")
+	public GetNewsResponse getNewsByStatus(@RequestParam(value = "newsStatus", required = true) Boolean newsStatus){
+		System.out.println("Calling get news by status service");
+		GetNewsResponse response = null;
+		try{
+			response = NewsDAO.getNewsByStatus(newsStatus);
+		}
+		catch(Exception e){
+			System.out.println("Exception in getNewsByStatus service: "+e.getMessage());
+		}
+		return response;
+	}
+	
+	@RequestMapping(method = {RequestMethod.PUT}, value = "/publish-news")
+	public CommonResponse publishNews(@RequestParam(value = "newsId", required = true) int newsId){
+		System.out.println("Calling publish news service");
+		CommonResponse response = null;
+		try{
+			response = NewsDAO.publishNews(newsId);
+		}
+		catch(Exception e){
+			System.out.println("Exception in getNewsByStatus service: "+e.getMessage());
+		}
+		return response;
+	}
+	
+	@RequestMapping(method = {RequestMethod.PUT}, value = "/unpublish-news")
+	public CommonResponse unpublishNews(@RequestParam(value = "newsId", required = true) int newsId){
+		System.out.println("Calling unpublish news service");
+		CommonResponse response = null;
+		try{
+			response = NewsDAO.unpublishNews(newsId);
+		}
+		catch(Exception e){
+			System.out.println("Exception in getNewsByStatus service: "+e.getMessage());
+		}
+		return response;
+	}
 	@RequestMapping(method = {RequestMethod.GET}, value = "/get-news")
 	public GetNewsResponse getNews(@RequestParam(value = "newsId", required = true) int newsId){
 		System.out.println("Calling get news by id service");;
