@@ -1,5 +1,8 @@
 package edu.tests.TestForSure.sql;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import edu.tests.TestForSure.entity.Question;
 import edu.tests.TestForSure.entity.TestDetails;
 import edu.tests.TestForSure.entity.UserDetails;
@@ -91,28 +94,28 @@ public class CreateTestQueries {
 	}
 	
 	public static String getTestDetailsQueryBuilder(int categoryId, int subCatId) {
-		String getTestDetails = "SELECT * FROM testdetails WHERE cat_id = '" + categoryId + "'AND subcat_id = '" + subCatId + "'";
+		String getTestDetails = "SELECT * FROM testdetails WHERE cat_id = '" + categoryId + "'AND subcat_id = '" + subCatId + "' ORDER BY last_updated_on DESC";
 		return getTestDetails;
 	}
 	public static String getTestDetailsQueryBuilder() {
-		String getTestDetails = "SELECT * FROM testdetails";
+		String getTestDetails = "SELECT * FROM testdetails ORDER BY last_updated_on DESC";
 		return getTestDetails;
 	}
 	public static String getTestDetailsQueryBuilder(int categoryId) {
-		String getTestDetails = "SELECT * FROM testdetails WHERE cat_id = '" + categoryId + "'";
+		String getTestDetails = "SELECT * FROM testdetails WHERE cat_id = '" + categoryId + "' ORDER BY last_updated_on DESC";
 		return getTestDetails;
 	}
 	
 	public static String getTestDetailsByStatusQueryBuilder(int categoryId, int subCatId) {
-		String getTestDetails = "SELECT * FROM testdetails WHERE cat_id = '" + categoryId + "'AND subcat_id = '" + subCatId + "'AND active = 'true'";
+		String getTestDetails = "SELECT * FROM testdetails WHERE cat_id = '" + categoryId + "'AND subcat_id = '" + subCatId + "'AND active = 'true' ORDER BY last_updated_on DESC";
 		return getTestDetails;
 	}
 	public static String getTestDetailsByStatusQueryBuilder() {
-		String getTestDetails = "SELECT * FROM testdetails WHERE active = 'true'";
+		String getTestDetails = "SELECT * FROM testdetails WHERE active = 'true' ORDER BY last_updated_on DESC";
 		return getTestDetails;
 	}
 	public static String getTestDetailsByStatusQueryBuilder(int categoryId) {
-		String getTestDetails = "SELECT * FROM testdetails WHERE cat_id = '" + categoryId + "'AND active = 'true'";
+		String getTestDetails = "SELECT * FROM testdetails WHERE cat_id = '" + categoryId + "'AND active = 'true' ORDER BY last_updated_on DESC";
 		return getTestDetails;
 	}
 	
@@ -144,12 +147,14 @@ public class CreateTestQueries {
 	}
 	
 	public static String getPublishTestQueryBuilder(int test_id) {
-		String publishTest = "UPDATE testdetails SET active = 'true ' WHERE id = '" + test_id + "'";
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		String publishTest = "UPDATE testdetails SET active = 'true', last_updated_on = '" + timeStamp +"' WHERE id = '" + test_id + "'";
 		return publishTest;
 	}
 	
 	public static String getUnpublishTestQueryBuilder(int test_id) {
-		String unpublishTest = "UPDATE testdetails SET active = 'false ' WHERE id = '" + test_id + "'";
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		String unpublishTest = "UPDATE testdetails SET active = 'false', last_updated_on = '" + timeStamp +"'  WHERE id = '" + test_id + "'";
 		return unpublishTest;
 	}
 	public static String getTestDetailsByTestIdQueryBuilder(int testId) {
@@ -168,7 +173,7 @@ public class CreateTestQueries {
 		String getAnswers = "SELECT id, correct_option, explanation FROM questions WHERE test_id = '" + test_id + "' AND active='true'";
 		return getAnswers;
 	}
-	
+	 
 	public static String insertTestReport(TestResultResponse resultResponse, UserDetails userDetails, int no_of_ques) {
 		String insertTestReport = "INSERT into testreports (test_id, username, emailid, mobile_number, marks_scored, time_taken, rank, questions_attempted, correct_ques, incorrect_ques, total_ques) values ('"+
 					resultResponse.getTest_id() +"' , '" +userDetails.getUsername() + "' , '"+userDetails.getEmail() + "' , '"+userDetails.getMobile() + "' , '"+resultResponse.getMarks_scored() + "' , '"+

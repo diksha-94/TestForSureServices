@@ -1,6 +1,7 @@
 package edu.tests.TestForSure.entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class TestDetails {
 	private int id;
@@ -13,6 +14,7 @@ public class TestDetails {
 	private BigDecimal negative_marks;
 	private Boolean active;
 	private String imagePath;
+	private Date last_updated_on;
 	public int getId() {
 		return id;
 	}
@@ -73,14 +75,21 @@ public class TestDetails {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
+	public Date getLast_updated_on() {
+		return last_updated_on;
+	}
+	public void setLast_updated_on(Date last_updated_on) {
+		this.last_updated_on = last_updated_on;
+	}
 	@Override
 	public String toString() {
 		return "TestDetails [id=" + id + ", cat_id=" + cat_id + ", subcat_id=" + subcat_id + ", testTitle=" + testTitle
 				+ ", no_of_ques=" + no_of_ques + ", time_limit=" + time_limit + ", correct_ques_marks="
-				+ correct_ques_marks + ", negative_marks=" + negative_marks + ", active=" + active + ", imagePath=" + imagePath + "]";
+				+ correct_ques_marks + ", negative_marks=" + negative_marks + ", active=" + active + ", imagePath="
+				+ imagePath + ", last_updated_on=" + last_updated_on + "]";
 	}
 	public TestDetails(int id, int cat_id, int subcat_id, String testTitle, int no_of_ques, BigDecimal time_limit,
-			int correct_ques_marks, BigDecimal negative_marks, Boolean active, String imagePath) {
+			int correct_ques_marks, BigDecimal negative_marks, Boolean active, String imagePath, Date last_updated_on) {
 		super();
 		this.id = id;
 		this.cat_id = cat_id;
@@ -92,6 +101,7 @@ public class TestDetails {
 		this.negative_marks = negative_marks;
 		this.active = active;
 		this.imagePath = imagePath;
+		this.last_updated_on = last_updated_on;
 	}
 	public TestDetails(){
 		super();
