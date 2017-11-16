@@ -927,7 +927,7 @@ public class TestDAO {
 	}
 	
 	public static ArrayList<TopPerformers> getTopPerformers(int testId){
-		System.out.println("Calling DAO");
+		System.out.println("Calling getTopPerformers");
 		ArrayList<TopPerformers> response = new ArrayList<TopPerformers>();
 		Connection conn = DBConnection.getDBConnection();
 		String query = "";

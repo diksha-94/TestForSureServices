@@ -1,5 +1,8 @@
 package edu.tests.TestForSure.service;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.*;
 
 import javax.mail.Message;
@@ -11,7 +14,9 @@ import javax.mail.internet.MimeMessage;
 import edu.tests.TestForSure.datalayer.TestDAO;
 import edu.tests.TestForSure.entity.Question;
 import edu.tests.TestForSure.entity.Result;
+import edu.tests.TestForSure.entity.TopPerformers;
 import edu.tests.TestForSure.entity.UserDetails;
+import edu.tests.TestForSure.entity.ViewReportDetails;
 import edu.tests.TestForSure.response.CommonResponse;
 import edu.tests.TestForSure.response.GetQuestionsResponse;
 import edu.tests.TestForSure.response.QuestionDetail;
@@ -131,4 +136,20 @@ public class GeneralFunctionality {
 	      e.printStackTrace();
 	    }
 	}
+	
+	//to find the average score and marks scored for View Report
+	public static ViewReportDetails findAverage(ArrayList<TopPerformers> topPerformers, ViewReportDetails details){
+		int size = topPerformers.size();
+		BigDecimal scoreSum = new BigDecimal(0);
+		BigDecimal timeSum = new BigDecimal(0);
+		MathContext mc = new MathContext(2, RoundingMode.HALF_UP);
+		for(TopPerformers topPerformer : topPerformers){
+			scoreSum = scoreSum.add(topPerformer.getMarks_scored());
+			timeSum = timeSum.add(topPerformer.getTime_taken());
+		}
+		details.setAvgScore(scoreSum.divide(new BigDecimal(size), mc));
+		details.setAvgTime(timeSum.divide(new BigDecimal(size), mc));
+		return details;
+	}
+	
 }

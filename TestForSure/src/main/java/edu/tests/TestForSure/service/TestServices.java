@@ -41,7 +41,7 @@ public class TestServices {
 
 	@RequestMapping(method = {RequestMethod.GET}, value = "/get-category")
 	public GetCategoryResponse getAllCategories(){
-		System.out.println("Calling get category service");;
+		System.out.println("Calling get category service");
 		GetCategoryResponse response = null;
 		try{
 			response = TestDAO.getAllCategoriesDAO();
@@ -54,7 +54,7 @@ public class TestServices {
 	
 	@RequestMapping(method = {RequestMethod.GET}, value = "/get-subcategory")
 	public GetSubcategoryResponse getSubcategories( @RequestParam(value = "categoryId", required = true) int categoryId){
-		System.out.println("Calling get subcategory service");;
+		System.out.println("Calling get subcategory service");
 		GetSubcategoryResponse response = null;
 		try{
 			response = TestDAO.getSubcategoriesDAO(categoryId);
