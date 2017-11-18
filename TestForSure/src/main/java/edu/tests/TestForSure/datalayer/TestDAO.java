@@ -236,6 +236,7 @@ public class TestDAO {
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
 					testDetails.setNegative_marks(rs.getBigDecimal(8));
 					testDetails.setActive(rs.getBoolean(13));
+					testDetails.setShuffleQuestions(rs.getString(10));
 					list.add(testDetails);
 				}
 				response.setTestDetails(list);
@@ -303,7 +304,7 @@ public class TestDAO {
 					testDetails.setTime_limit(rs.getBigDecimal(6));
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
 					testDetails.setNegative_marks(rs.getBigDecimal(8));
-					
+					testDetails.setShuffleQuestions(rs.getString(10));
 					String imagePath = TestDAO.getTestImagePathDAO(testDetails.getCat_id());
 					
 					testDetails.setImagePath(imagePath);
@@ -358,6 +359,7 @@ public class TestDAO {
 					testDetails.setTime_limit(rs.getBigDecimal(6));
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
 					testDetails.setNegative_marks(rs.getBigDecimal(8));
+					testDetails.setShuffleQuestions(rs.getString(10));
 				}
 				
 				response.setTestDetails(testDetails);
@@ -401,12 +403,18 @@ public class TestDAO {
 	}
 	
 	
-	public static GetQuestionsResponse getQuestions(int test_id){
+	public static GetQuestionsResponse getQuestions(int test_id, String shuffle){
 		System.out.println("Calling DAO");
+		System.out.println("Shuffle value in DAO: "+shuffle);
 		GetQuestionsResponse response = new GetQuestionsResponse();
 		Connection conn = DBConnection.getDBConnection();
-		String query = CreateTestQueries.getQuestionsQueryBuilder(test_id);
-		
+		String query = "";
+		if(shuffle.equals("true")){
+			query = CreateTestQueries.getQuestionsShuffleQueryBuilder(test_id);
+		}
+		else{
+			query = CreateTestQueries.getQuestionsQueryBuilder(test_id);
+		}
 		System.out.println("Query: "+query);
 		ResultSet rs = null;
 		ArrayList<Question> list = new ArrayList<Question>();
@@ -744,6 +752,7 @@ public class TestDAO {
 					testDetails.setCorrect_ques_marks(rs.getInt(7));
 					testDetails.setNegative_marks(rs.getBigDecimal(8));
 					testDetails.setActive(rs.getBoolean(9));
+					testDetails.setShuffleQuestions(rs.getString(10));
 				}
 			}
 			else{

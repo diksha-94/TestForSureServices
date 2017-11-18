@@ -15,6 +15,7 @@ public class TestDetails {
 	private Boolean active;
 	private String imagePath;
 	private Date last_updated_on;
+	private String shuffleQuestions;
 	public int getId() {
 		return id;
 	}
@@ -81,15 +82,21 @@ public class TestDetails {
 	public void setLast_updated_on(Date last_updated_on) {
 		this.last_updated_on = last_updated_on;
 	}
+	public String getShuffleQuestions() {
+		return shuffleQuestions;
+	}
+	public void setShuffleQuestions(String shuffleQuestions) {
+		this.shuffleQuestions = shuffleQuestions;
+	}
 	@Override
 	public String toString() {
 		return "TestDetails [id=" + id + ", cat_id=" + cat_id + ", subcat_id=" + subcat_id + ", testTitle=" + testTitle
 				+ ", no_of_ques=" + no_of_ques + ", time_limit=" + time_limit + ", correct_ques_marks="
 				+ correct_ques_marks + ", negative_marks=" + negative_marks + ", active=" + active + ", imagePath="
-				+ imagePath + ", last_updated_on=" + last_updated_on + "]";
+				+ imagePath + ", last_updated_on=" + last_updated_on + ", shuffleQuestions=" + shuffleQuestions + "]";
 	}
 	public TestDetails(int id, int cat_id, int subcat_id, String testTitle, int no_of_ques, BigDecimal time_limit,
-			int correct_ques_marks, BigDecimal negative_marks, Boolean active, String imagePath, Date last_updated_on) {
+			int correct_ques_marks, BigDecimal negative_marks, Boolean active, String imagePath, Date last_updated_on, String shuffleQuestions) {
 		super();
 		this.id = id;
 		this.cat_id = cat_id;
@@ -102,6 +109,7 @@ public class TestDetails {
 		this.active = active;
 		this.imagePath = imagePath;
 		this.last_updated_on = last_updated_on;
+		this.shuffleQuestions = shuffleQuestions;
 	}
 	public TestDetails(){
 		super();

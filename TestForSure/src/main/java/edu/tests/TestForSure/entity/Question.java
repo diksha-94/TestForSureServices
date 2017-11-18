@@ -1,5 +1,7 @@
 package edu.tests.TestForSure.entity;
 
+import java.util.Date;
+
 public class Question {
 	private String id;
 	private int test_id;
@@ -12,6 +14,7 @@ public class Question {
 	private String optionD;
 	private String correct_option;
 	private String explanation;
+	private Date last_updated_on;
 	public String getId() {
 		return id;
 	}
@@ -78,15 +81,21 @@ public class Question {
 	public void setExplanation(String explanation) {
 		this.explanation = explanation;
 	}
+	public Date getLast_updated_on() {
+		return last_updated_on;
+	}
+	public void setLast_updated_on(Date last_updated_on) {
+		this.last_updated_on = last_updated_on;
+	}
 	@Override
 	public String toString() {
 		return "Question [id=" + id + ", test_id=" + test_id + ", ques_type=" + ques_type + ", paragraph_text="
 				+ paragraph_text + ", ques_text=" + ques_text + ", optionA=" + optionA + ", optionB=" + optionB
 				+ ", optionC=" + optionC + ", optionD=" + optionD + ", correct_option=" + correct_option
-				+ ", explanation=" + explanation + "]";
+				+ ", explanation=" + explanation + ", last_updated_on=" + last_updated_on +"]";
 	}
 	public Question(String id, int test_id, String ques_type, String paragraph_text, String ques_text, String optionA,
-			String optionB, String optionC, String optionD, String correct_option, String explanation) {
+			String optionB, String optionC, String optionD, String correct_option, String explanation, Date last_updated_on) {
 		super();
 		this.id = id;
 		this.test_id = test_id;
@@ -99,6 +108,7 @@ public class Question {
 		this.optionD = optionD;
 		this.correct_option = correct_option;
 		this.explanation = explanation;
+		this.last_updated_on = last_updated_on;
 	}
 	public Question(){
 		super();

@@ -1,5 +1,8 @@
 package edu.tests.TestForSure.sql;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import edu.tests.TestForSure.entity.QuestionBank;
 
 public class CreateQuestionBankQueries {
@@ -88,7 +91,9 @@ public class CreateQuestionBankQueries {
 	}
 	
 	public static String insertQuestionFromQuestionBank(String question_id){
-		String insert_question = "insert into questions (id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation) select id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation from questionbank WHERE id='"+question_id+"'";
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		
+		String insert_question = "insert into questions (id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation, last_updated_on) select id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation,'"+ timeStamp+"' from questionbank WHERE id='"+question_id+"'";
 		return insert_question;
 	}
 	

@@ -159,14 +159,16 @@ public class TestServices {
 	}
 	
 	@RequestMapping(method = {RequestMethod.GET}, value = "/get-questions")
-	public GetQuestionsResponse getTestDetails( @RequestParam(value = "test_id") int test_id){
+	public GetQuestionsResponse getTestQuestions( @RequestParam(value = "test_id") int test_id,
+												@RequestParam(value = "shuffle") String shuffle){
 		System.out.println("Calling get questions service");
 		System.out.println("TestId: "+test_id);
+		System.out.println("Shuffle: "+shuffle);
 		
 		GetQuestionsResponse response = null;
 		
 		try{
-			response = TestDAO.getQuestions(test_id);
+			response = TestDAO.getQuestions(test_id, shuffle);
 		}
 		catch(Exception e){
 			System.out.println("Exception in service: "+e.getMessage());

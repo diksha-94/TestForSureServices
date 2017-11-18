@@ -37,9 +37,9 @@ public class CreateTestQueries {
 	 * 
 	 */
 	public static String insertTestDetailsQueryBuilder(TestDetails testDetails) {
-		String getTestDetails = "INSERT into testdetails (id, cat_id, subcat_id, title, no_of_ques, time_limit, correct_ans_marks, wrong_ans_marks) values ('"+
+		String getTestDetails = "INSERT into testdetails (id, cat_id, subcat_id, title, no_of_ques, time_limit, correct_ans_marks, wrong_ans_marks, shuffle_ques) values ('"+
 				testDetails.getId()+ "' , '" +testDetails.getCat_id() + "' , '"+testDetails.getSubcat_id() + "' , '"+testDetails.getTestTitle() + "' , '"+testDetails.getNo_of_ques() + "' , '"+
-					testDetails.getTime_limit() + "' , '"+testDetails.getCorrect_ques_marks() + "' , '"+testDetails.getNegative_marks() + "')";
+					testDetails.getTime_limit() + "' , '"+testDetails.getCorrect_ques_marks() + "' , '"+testDetails.getNegative_marks()+ "' , '"+testDetails.getShuffleQuestions() + "')";
 		return getTestDetails;
 	}
 	
@@ -51,7 +51,7 @@ public class CreateTestQueries {
 	public static String updateTestDetailsQueryBuilder(TestDetails testDetails) {
 		String getTestDetails = "UPDATE testdetails SET cat_id = '"+testDetails.getCat_id()+"', subcat_id = '"+testDetails.getSubcat_id()+"',title = '"+testDetails.getTestTitle()+
 				"', no_of_ques = '"+testDetails.getNo_of_ques()+"', time_limit = '"+testDetails.getTime_limit()+"', correct_ans_marks = '"+testDetails.getCorrect_ques_marks()+
-				"', wrong_ans_marks = '"+testDetails.getNegative_marks()+"' WHERE id= '"+testDetails.getId()+"'";
+				"', wrong_ans_marks = '"+testDetails.getNegative_marks()+"', shuffle_ques = '"+testDetails.getShuffleQuestions()+"' WHERE id= '"+testDetails.getId()+"'";
 		return getTestDetails;
 	}
 	
@@ -71,9 +71,11 @@ public class CreateTestQueries {
 	}*/
 	
 	public static String insertQuestionQueryBuilder(Question question) {
-		String insertQuestion = "INSERT into questions (id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation) values ('"+
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		String insertQuestion = "INSERT into questions (id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation, last_updated_on) values ('"+
 					question.getId() +"' , '" +question.getTest_id() + "' , '"+question.getQues_type() + "' , '"+question.getParagraph_text() + "' , '"+question.getQues_text() + "' , '"+
-					question.getOptionA() + "' , '"+question.getOptionB() + "' , '"+question.getOptionC()+ "' , '"+question.getOptionD()+ "' , '"+question.getCorrect_option()+ "' , '"+question.getExplanation() + "')";
+					question.getOptionA() + "' , '"+question.getOptionB() + "' , '"+question.getOptionC()+ "' , '"+question.getOptionD()+ "' , '"+question.getCorrect_option()+ "' , '"+
+					question.getExplanation()+ "' , '"+ timeStamp + "')";
 		return insertQuestion;
 	}
 	
@@ -120,7 +122,12 @@ public class CreateTestQueries {
 	}
 	
 	public static String getQuestionsQueryBuilder(int test_id) {
-		String getTestDetails = "SELECT id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation FROM questions WHERE test_id = '" + test_id + "' AND active = 'true'";
+		String getTestDetails = "SELECT id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation, last_updated_on FROM questions WHERE test_id = '" + test_id + "' AND active = 'true' ORDER BY last_updated_on ASC";
+		return getTestDetails;
+	}
+	
+	public static String getQuestionsShuffleQueryBuilder(int test_id) {
+		String getTestDetails = "SELECT id, test_id, question_type, paragraph_text, question_text, optionA, optionB, optionC, optionD, correct_option, explanation, last_updated_on FROM questions WHERE test_id = '" + test_id + "' AND active = 'true'";
 		return getTestDetails;
 	}
 	
