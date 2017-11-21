@@ -181,6 +181,7 @@ public class NewsDAO {
 					news.setHeadline(result.getString(2));
 					news.setDetail(result.getString(3));
 					news.setActive(result.getBoolean(4));
+					news.setLast_updated_on(result.getDate(5));
 					list.add(news);
 				}
 				
@@ -225,6 +226,7 @@ public class NewsDAO {
 					news.setHeadline(result.getString(2));
 					news.setDetail(result.getString(3));
 					news.setActive(result.getBoolean(4));
+					news.setLast_updated_on(result.getDate(5));
 					list.add(news);
 				}
 				

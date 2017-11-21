@@ -44,6 +44,7 @@ public class TestReportDAO {
 					report.setCorrect_ques(rs.getInt(10));
 					report.setIncorrect_ques(rs.getInt(11));
 					report.setTotal_ques(rs.getInt(12));
+					report.setLast_updated_on(rs.getDate(13));
 					
 					testReports.add(report);
 				}

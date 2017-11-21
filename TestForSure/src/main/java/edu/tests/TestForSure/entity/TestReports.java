@@ -1,6 +1,7 @@
 package edu.tests.TestForSure.entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class TestReports {
 	private int id;
@@ -15,6 +16,7 @@ public class TestReports {
 	private int correct_ques;
 	private int incorrect_ques;
 	private int total_ques;
+	private Date last_updated_on;
 	public int getId() {
 		return id;
 	}
@@ -87,8 +89,14 @@ public class TestReports {
 	public void setTotal_ques(int total_ques) {
 		this.total_ques = total_ques;
 	}
+	public Date getLast_updated_on() {
+		return last_updated_on;
+	}
+	public void setLast_updated_on(Date last_updated_on) {
+		this.last_updated_on = last_updated_on;
+	}
 	public TestReports(int id, int test_id, String username, String emailid, Long mobile_number, BigDecimal marks_scored,
-			BigDecimal time_taken, int rank, int questions_attempted, int correct_ques, int incorrect_ques, int total_ques) {
+			BigDecimal time_taken, int rank, int questions_attempted, int correct_ques, int incorrect_ques, int total_ques, Date last_updated_on) {
 		super();
 		this.id = id;
 		this.test_id = test_id;
@@ -102,6 +110,7 @@ public class TestReports {
 		this.correct_ques = correct_ques;
 		this.incorrect_ques = incorrect_ques;
 		this.total_ques = total_ques;
+		this.last_updated_on = last_updated_on;
 	}
 	public TestReports() {
 		super();
@@ -111,6 +120,6 @@ public class TestReports {
 		return "TestReports [id=" + id + ", test_id=" + test_id + ", username=" + username + ", emailid=" + emailid
 				+ ", mobile_number=" + mobile_number + ", marks_scored=" + marks_scored + ", time_taken=" + time_taken
 				+ ", rank=" + rank + ", questions_attempted=" + questions_attempted + ", correct_ques=" + correct_ques
-				+ ", incorrect_ques=" + incorrect_ques + ", total_ques=" + total_ques+ "]";
+				+ ", incorrect_ques=" + incorrect_ques + ", total_ques=" + total_ques+ ", last_updated_on=" + last_updated_on+ "]";
 	}
 }

@@ -182,9 +182,10 @@ public class CreateTestQueries {
 	}
 	 
 	public static String insertTestReport(TestResultResponse resultResponse, UserDetails userDetails, int no_of_ques) {
-		String insertTestReport = "INSERT into testreports (test_id, username, emailid, mobile_number, marks_scored, time_taken, rank, questions_attempted, correct_ques, incorrect_ques, total_ques) values ('"+
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		String insertTestReport = "INSERT into testreports (test_id, username, emailid, mobile_number, marks_scored, time_taken, rank, questions_attempted, correct_ques, incorrect_ques, total_ques, last_updated_on) values ('"+
 					resultResponse.getTest_id() +"' , '" +userDetails.getUsername() + "' , '"+userDetails.getEmail() + "' , '"+userDetails.getMobile() + "' , '"+resultResponse.getMarks_scored() + "' , '"+
-					resultResponse.getTime_taken() + "' , '"+resultResponse.getRank() + "' , '"+resultResponse.getQues_attempted()+ "' , '"+resultResponse.getCorrect_ques()+ "' , '"+resultResponse.getIncorrect_ques()+ "' , '"+no_of_ques + "')";
+					resultResponse.getTime_taken() + "' , '"+resultResponse.getRank() + "' , '"+resultResponse.getQues_attempted()+ "' , '"+resultResponse.getCorrect_ques()+ "' , '"+resultResponse.getIncorrect_ques()+ "' , '"+no_of_ques+ "' , '"+timeStamp + "')";
 		return insertTestReport;
 	}
 	public static String findRank(Double marks_scored, int test_id) {

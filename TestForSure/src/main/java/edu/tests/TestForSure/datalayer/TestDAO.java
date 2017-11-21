@@ -435,6 +435,7 @@ public class TestDAO {
 					question.setOptionD(rs.getString(9));
 					question.setCorrect_option(rs.getString(10));
 					question.setExplanation(rs.getString(11));
+					question.setLast_updated_on(rs.getDate(12));
 					
 					list.add(question);
 				}

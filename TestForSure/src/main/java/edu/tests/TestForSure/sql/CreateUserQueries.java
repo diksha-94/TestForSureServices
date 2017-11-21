@@ -1,16 +1,20 @@
 package edu.tests.TestForSure.sql;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import edu.tests.TestForSure.entity.User;
 import edu.tests.TestForSure.entity.UserCreds;
 
 public class CreateUserQueries {
 	
 	public static String insertUserDetailsQueryBuilder(User user) {
-		String insertUserDetails = "INSERT into userdetails (id, name, email, mobileno) values ('"+
-					user.getId()+"','"+ user.getName() +"' , '" +user.getEmail() + "' , '"+user.getMobileno() + "')";
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		String insertUserDetails = "INSERT into userdetails (id, name, email, mobileno, last_updated_on) values ('"+
+					user.getId()+"','"+ user.getName() +"' , '" +user.getEmail() + "' , '"+user.getMobileno()+ "' , '"+timeStamp + "')";
 		return insertUserDetails;
 	}
-	
+	  
 	public static String insertUserCredsQueryBuilder(UserCreds userCreds) {
 		String insertUserCreds = "INSERT into usercreds (user_id, password) values ('"+
 				userCreds.getUserId() +"' , '" +userCreds.getPassword() + "')";
