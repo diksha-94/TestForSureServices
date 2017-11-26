@@ -111,8 +111,8 @@ public class UserServices {
 					currentPassword = response.getMessage();
 				
 					//Set these in configuration
-					final String fromEmail = "bajaj.diksha45@gmail.com"; //requires valid gmail id
-					final String password = "Pap.baj-45"; // correct password for gmail id
+					final String fromEmail = System.getenv("FROM_EMAIL"); //requires valid gmail id
+					final String password = System.getenv("FROM_PASSWORD"); // correct password for gmail id
 					final String toEmail = emailId; // can be any email id 
 					
 					Properties props = new Properties();
