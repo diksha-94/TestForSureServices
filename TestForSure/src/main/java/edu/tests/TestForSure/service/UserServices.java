@@ -33,6 +33,8 @@ public class UserServices {
 
 	@RequestMapping(method = {RequestMethod.POST}, value = "/register-user")
 	public LoginUserResponse registerUser(@RequestBody RegisterUserRequest request){
+		String randomString = GeneralFunctionality.randomAlphaNumeric(18);
+		
 		System.out.println("Calling register user service");;
 		LoginUserResponse response = new LoginUserResponse();
 		CommonResponse res = null;
@@ -52,8 +54,43 @@ public class UserServices {
 		userCreds.setUserId(request.getUserDetails().getId());
 		userCreds.setPassword(encryptedPassword);
 		try{
-			response = UserDAO.registerUserDAO(user, userCreds);
+			response = UserDAO.registerUserDAO(user, userCreds, randomString);
 			response.setUsername(user.getName());
+			
+			System.out.println("Response from register user: "+response);
+			if(response.getResponse().getStatus() == true){
+			//Set these in configuration
+			final String fromEmail = System.getenv("FROM_EMAIL"); //requires valid gmail id
+			final String password = System.getenv("FROM_PASSWORD"); // correct password for gmail id
+			final String toEmail = user.getEmail(); // can be any email id 
+			
+			Properties props = new Properties();
+			props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
+			props.put("mail.smtp.port", "587"); //TLS Port
+			props.put("mail.smtp.auth", "true"); //enable authentication
+			props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+			
+			//create Authenticator object to pass in Session.getInstance argument
+			Authenticator auth = new Authenticator() {
+				//override the getPasswordAuthentication method
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(fromEmail, password);
+				}
+			};
+			Session session = Session.getInstance(props, auth);
+			String link = System.getenv("EMAIL_VERIFICATION_LINK")+"?emailId="+toEmail+"&id="+randomString;
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("<h4>Greetings!!</h4></br>");
+			sb.append("<p>Please verify your e-mail by clicking on the link below:</p></br>");
+			sb.append("<a href='"+link+"'>"+link+"</a></br></br>");
+			sb.append("<p>Thanks,</p></br>");
+			sb.append("<p>TEST2BSURE Team</p>");
+			
+			System.out.println("html: "+sb.toString());
+			String body = sb.toString();
+			GeneralFunctionality.sendEmail(session, toEmail,"TEST2BSURE: Account E-mail verification", body);
+			}
 		}
 		catch(Exception e){
 			System.out.println("Exception in service: "+e.getMessage());
@@ -129,7 +166,7 @@ public class UserServices {
 						}
 					};
 					Session session = Session.getInstance(props, auth);
-					String link = "file:///C:/MyGit/Test-for-sure-app/User%20Interface/TestForSureUI/WebContent/html/PasswordReset.html?userId="+registeredId+"&pass="+currentPassword;
+					String link = System.getenv("RESET_PASSWORD_LINK")+"?userId="+registeredId+"&pass="+currentPassword;
 					
 					StringBuilder sb = new StringBuilder();
 					sb.append("<h4>Greetings!!</h4></br>");
@@ -193,6 +230,79 @@ public class UserServices {
 		CommonResponse response = null;
 		try{
 			response = UserDAO.getCurretPassword(emailId);
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+		}
+		return response;
+	}
+	
+	//This service is to check if the email verification link is still valid or not
+	@RequestMapping(method = {RequestMethod.GET}, value = "/verify-email-link")
+	public CommonResponse verifyEmailLink( @RequestParam(value = "emailId", required = true) String emailId,
+			 @RequestParam(value = "uniqueId", required = true) String uniqueId){
+		System.out.println("Calling verify-email-link");
+		CommonResponse response = null;
+		try{
+			response = UserDAO.verifyEmailLink(emailId, uniqueId);
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
+		}
+		return response;
+	}
+	
+	@RequestMapping(method = {RequestMethod.GET}, value = "/send-verification-email")
+	public CommonResponse sendVerificationEmailAgain(@RequestParam(value = "emailId", required = true) String emailId){
+		String randomString = GeneralFunctionality.randomAlphaNumeric(18);
+		
+		System.out.println("Calling register user service");;
+		CommonResponse response = new CommonResponse();
+		try{
+			response = UserDAO.sendVerificationEmailAgain(emailId, randomString);
+			
+			System.out.println("Response from sendVerificationEmailAgain: "+response);
+			if(response.getStatus() == true){
+			//Set these in configuration
+			final String fromEmail = System.getenv("FROM_EMAIL"); //requires valid gmail id
+			final String password = System.getenv("FROM_PASSWORD"); // correct password for gmail id
+			final String toEmail = emailId; // can be any email id 
+			
+			Properties props = new Properties();
+			props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
+			props.put("mail.smtp.port", "587"); //TLS Port
+			props.put("mail.smtp.auth", "true"); //enable authentication
+			props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+			
+			//create Authenticator object to pass in Session.getInstance argument
+			Authenticator auth = new Authenticator() {
+				//override the getPasswordAuthentication method
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(fromEmail, password);
+				}
+			};
+			Session session = Session.getInstance(props, auth);
+			String link = System.getenv("EMAIL_VERIFICATION_LINK")+"?emailId="+toEmail+"&id="+randomString;
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("<h4>Greetings!!</h4></br>");
+			sb.append("<p>Please verify your e-mail by clicking on the link below:</p></br>");
+			sb.append("<a href='"+link+"'>"+link+"</a></br></br>");
+			sb.append("<p>Thanks,</p></br>");
+			sb.append("<p>TEST2BSURE Team</p>");
+			
+			System.out.println("html: "+sb.toString());
+			String body = sb.toString();
+			GeneralFunctionality.sendEmail(session, toEmail,"TEST2BSURE: Account E-mail verification", body);
+			}
+			else{
+				if((response.getMessage()).equals("Error in updating unique id")){
+					response.setMessage("Error in sending E-mail verification link. Please try again after some time");
+				}
+				else if((response.getMessage()).equals("Unique id updated")){
+					response.setMessage("E-mail verification link has been sent successfully !!");
+				}
+			}
 		}
 		catch(Exception e){
 			System.out.println("Exception in service: "+e.getMessage());

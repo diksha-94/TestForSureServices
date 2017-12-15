@@ -23,7 +23,16 @@ import edu.tests.TestForSure.response.QuestionDetail;
 import edu.tests.TestForSure.response.TestResultResponse;
 
 public class GeneralFunctionality {
+	private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	
+	public static String randomAlphaNumeric(int count){
+		StringBuilder builder = new StringBuilder();
+		while (count-- != 0) {
+			int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
+			builder.append(ALPHA_NUMERIC_STRING.charAt(character));
+		}
+		return builder.toString();
+	}
 	public static TestResultResponse generateTestReport(ArrayList<Result> candidateResponse, GetQuestionsResponse actualResponse){
 		System.out.println("Candidate Response: "+candidateResponse);
 		System.out.println("Actual Response: "+actualResponse);
