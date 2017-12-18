@@ -18,7 +18,6 @@ public class DBConnection {
 			} catch (ClassNotFoundException e) {
 				return null;
 			}
-			System.out.println(DATABASE_URL+"-----"+DATABASE_USERNAME+"-----"+DATABASE_PASSWORD);
 			Connection connection = DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME,
 					DATABASE_PASSWORD);
 			return connection;
