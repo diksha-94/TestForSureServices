@@ -20,10 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.tests.TestForSure.datalayer.TestDAO;
 import edu.tests.TestForSure.datalayer.UserDAO;
 import edu.tests.TestForSure.entity.AuthenticateUserRequest;
+import edu.tests.TestForSure.entity.ChangePasswordRequest;
 import edu.tests.TestForSure.entity.RegisterUserRequest;
 import edu.tests.TestForSure.entity.User;
 import edu.tests.TestForSure.entity.UserCreds;
+import edu.tests.TestForSure.entity.UserDetails;
 import edu.tests.TestForSure.response.CommonResponse;
+import edu.tests.TestForSure.response.GetUserProfileResponse;
 import edu.tests.TestForSure.response.LoginUserResponse;
 
 @CrossOrigin
@@ -309,4 +312,43 @@ public class UserServices {
 		}
 		return response;
 	}
+	
+		@RequestMapping(method = {RequestMethod.GET}, value = "/get-user-profile")
+		public GetUserProfileResponse getUserProfile( @RequestParam(value = "emailId", required = true) String emailId){
+			System.out.println("Calling get user profile service");
+			GetUserProfileResponse response = null;
+			try{
+				response = UserDAO.getUserProfile(emailId);
+			}
+			catch(Exception e){
+				System.out.println("Exception in service: "+e.getMessage());
+			}
+			return response;
+		}
+		
+		@RequestMapping(method = {RequestMethod.PUT}, value = "/update-user-profile")
+		public CommonResponse updateUserProfile(@RequestBody UserDetails user){
+			System.out.println("Calling update user profile service");
+			CommonResponse response = null;
+			try{
+				response = UserDAO.updateUserProfile(user);
+			}
+			catch(Exception e){
+				System.out.println("Exception in service: "+e.getMessage());
+			}
+			return response;
+		}
+		
+		@RequestMapping(method = {RequestMethod.PUT}, value = "/change-password")
+		public CommonResponse updateCurrentPassword(@RequestBody ChangePasswordRequest request){
+			System.out.println("Calling change current password service");
+			CommonResponse response = null;
+			try{
+				response = UserDAO.updateCurrentPassword(request.getEmailId(), request.getOldPassword(), request.getNewPassword());
+			}
+			catch(Exception e){
+				System.out.println("Exception in service: "+e.getMessage());
+			}
+			return response;
+		}
 }

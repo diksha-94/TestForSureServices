@@ -5,6 +5,7 @@ import java.util.Date;
 
 import edu.tests.TestForSure.entity.User;
 import edu.tests.TestForSure.entity.UserCreds;
+import edu.tests.TestForSure.entity.UserDetails;
 import edu.tests.TestForSure.service.GeneralFunctionality;
 
 public class CreateUserQueries {
@@ -71,5 +72,13 @@ public class CreateUserQueries {
 	public static String checkUserVerified(String emailId) {
 		String verifyEmailAgain = "SELECT * FROM userdetails WHERE email = '"+emailId+"' AND verified = 'true'";
 		return verifyEmailAgain;
+	}
+	public static String getUserDetails(String emailId){
+		String userDetails = "SELECT * FROM userdetails WHERE email = '"+emailId+"'";
+		return userDetails;
+	}
+	public static String updateUserDetails(UserDetails user) {
+		String userDetails = "UPDATE userdetails set name = '"+user.getUsername()+"', mobileno = '"+user.getMobile()+"' WHERE email = '"+user.getEmail()+"'";
+		return userDetails;
 	}
 }

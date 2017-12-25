@@ -9,8 +9,11 @@ import edu.tests.TestForSure.common.DBConnection;
 import edu.tests.TestForSure.entity.AuthenticateUserRequest;
 import edu.tests.TestForSure.entity.User;
 import edu.tests.TestForSure.entity.UserCreds;
+import edu.tests.TestForSure.entity.UserDetails;
 import edu.tests.TestForSure.response.CommonResponse;
+import edu.tests.TestForSure.response.GetUserProfileResponse;
 import edu.tests.TestForSure.response.LoginUserResponse;
+import edu.tests.TestForSure.service.PasswordEncryption;
 import edu.tests.TestForSure.sql.CreateUserQueries;
 
 public class UserDAO {
@@ -429,4 +432,162 @@ public class UserDAO {
 		}
 		return response;
 	}
+	
+	public static GetUserProfileResponse getUserProfile(String emailId){
+		System.out.println("Calling get user profile DAO");
+		GetUserProfileResponse response = new GetUserProfileResponse();
+		String getUserProfile = CreateUserQueries.getUserDetails(emailId);
+		System.out.println("Get User Details query: "+getUserProfile);
+		Connection conn = null;
+		UserDetails userDetails = null;
+		try {
+			conn = DBConnection.getDBConnection();
+			
+			Statement statement = conn.createStatement();
+			ResultSet rs = statement.executeQuery(getUserProfile);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					response.setResponse(new CommonResponse(true, "Successfully got user details"));
+					userDetails = new UserDetails();
+					userDetails.setUsername(rs.getString(2));
+					userDetails.setEmail(rs.getString(3));
+					userDetails.setMobile(rs.getLong(4));
+					response.setUserDetails(userDetails);
+				}
+			}
+			else{
+				response.setResponse(new CommonResponse(false, "Error in getting user details"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("SQL exception: "+e.getMessage());
+			response.setResponse(new CommonResponse(false, e.getMessage()));
+		}
+		finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setResponse(new CommonResponse(false, e.getMessage()));
+			}
+		}
+		return response;
+	}
+	
+	public static CommonResponse updateUserProfile(UserDetails user){
+		System.out.println("Calling update user profile DAO");
+		CommonResponse response = new CommonResponse();
+		String updateUserProfile = CreateUserQueries.updateUserDetails(user);
+		System.out.println("Get User Details query: "+updateUserProfile);
+		Connection conn = null;
+		try {
+			conn = DBConnection.getDBConnection();
+			
+			Statement statement = conn.createStatement();
+			int rs = statement.executeUpdate(updateUserProfile);
+			if(rs>0){
+				response.setStatus(true);
+				response.setMessage("User profile updated successfully");
+			}
+			else{
+				response.setStatus(false);
+				response.setMessage("Error in updating user profile");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("SQL exception: "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+		}
+		finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
+		}
+		return response;
+	}
+	
+	public static CommonResponse updateCurrentPassword(String emailId, String oldPassword, String newPassword){
+		System.out.println("Calling update current password DAO");
+		CommonResponse response = new CommonResponse();
+		String getUserId = CreateUserQueries.testEmailIdExists(emailId);
+		System.out.println("Get UserId query: "+getUserId);
+		Connection conn = null;
+		try {
+			conn = DBConnection.getDBConnection();
+			String userId = "";
+			String currentPassword = "";
+			Statement statement = conn.createStatement();
+			ResultSet rs = statement.executeQuery(getUserId);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					userId = rs.getString(1);
+				}
+				String getCurrentPassword = CreateUserQueries.getCurrentPassword(userId); 
+				statement = conn.createStatement();
+				ResultSet rs1 = statement.executeQuery(getCurrentPassword);
+				if(rs1.isBeforeFirst()){
+					while(rs1.next()){
+						currentPassword = rs1.getString(1);
+					}
+					String encryptedOldPassword = PasswordEncryption.encryptPassword(oldPassword);
+					if(encryptedOldPassword.equals("exception")){
+						response = new CommonResponse(false, "Error in encrypting password");
+					}
+					else{
+						if(currentPassword.equals(encryptedOldPassword)){
+							//means the current password match is success, update password now
+							String encryptedNewPassword = PasswordEncryption.encryptPassword(newPassword);
+							if(encryptedNewPassword.equals("exception")){
+								response = new CommonResponse(false, "Error in encrypting password");
+							}
+							String updatePassword = CreateUserQueries.updatePasswordQueryBuilder(userId, encryptedNewPassword);
+							statement = conn.createStatement();
+							int rs2 = statement.executeUpdate(updatePassword);
+							if(rs2>0){
+								response = new CommonResponse(true, "Password updated successfully !!");
+							}
+							else{
+								response = new CommonResponse(false, "Error in updating password");
+							}
+						}
+						else{
+							response = new CommonResponse(false, "Please enter your current password correctly.");
+						}
+					}
+				}
+				else{
+					response.setStatus(false);
+					response.setMessage("Error in getting Current Password");
+				}
+			}
+			else{
+				response.setStatus(false);
+				response.setMessage("Error in getting Current Password");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("SQL exception: "+e.getMessage());
+			response.setStatus(false);
+			response.setMessage(e.getMessage());
+		}
+		finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setStatus(false);
+				response.setMessage(e.getMessage());
+			}
+		}
+		return response;
+	}
+	
 }

@@ -8,8 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import edu.tests.TestForSure.common.DBConnection;
+import edu.tests.TestForSure.entity.AttemptedTests;
 import edu.tests.TestForSure.entity.ViewReportDetails;
 import edu.tests.TestForSure.entity.ViewReportQuestions;
+import edu.tests.TestForSure.response.AttemptedTestsResponse;
+import edu.tests.TestForSure.response.CommonResponse;
 import edu.tests.TestForSure.sql.ViewReportQueries;
 
 public class ViewReportDAO {
@@ -137,4 +140,55 @@ public class ViewReportDAO {
 	//getTopPerformers int TestDAO
 	//Average needs to be created
 	//Using getPerformers response, topper and average score & time_taken can be found
+	
+	public static AttemptedTestsResponse getAttemptedTests(String emailId){
+		System.out.println("Calling get Attempted tests");
+		String query = ViewReportQueries.getAttemptedTests(emailId);
+		Connection conn = DBConnection.getDBConnection();
+		ResultSet rs = null;
+		AttemptedTestsResponse response = new AttemptedTestsResponse();
+		AttemptedTests test = null;
+		ArrayList<AttemptedTests> list = new ArrayList<AttemptedTests>();
+		try{
+			Statement statement = conn.createStatement();
+			rs = statement.executeQuery(query);
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					test = new AttemptedTests();
+					test.setTest_id(rs.getInt(1));
+					test.setCat_id(rs.getInt(2));
+					test.setSubcat_id(rs.getInt(3));
+					test.setTitle(rs.getString(4));
+					test.setNo_of_ques(rs.getInt(5));
+					test.setTime_limit(rs.getBigDecimal(6));
+					test.setCorrect_ques_marks(rs.getInt(7));
+					test.setNegative_marks(rs.getBigDecimal(8));
+					test.setReport_id(rs.getInt(9));
+					test.setLast_updated_on(rs.getDate(10));
+					String imagePath = TestDAO.getTestImagePathDAO(rs.getInt(2));
+					test.setImagePath(imagePath);
+					list.add(test);
+				}
+				response.setAttemptedTests(list);
+				response.setResponse(new CommonResponse(true, "Successfully got attempted tests"));
+			}
+			else {
+				response.setResponse(new CommonResponse(false, "No Tests Attempted"));
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception from DAO: "+e.getMessage());
+			response.setResponse(new CommonResponse(false, e.getMessage()));
+		}finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.setResponse(new CommonResponse(false, e.getMessage()));
+			}
+		}
+		
+		return response;
+	}
 }

@@ -12,6 +12,7 @@ import edu.tests.TestForSure.datalayer.ViewReportDAO;
 import edu.tests.TestForSure.entity.TopPerformers;
 import edu.tests.TestForSure.entity.ViewReportDetails;
 import edu.tests.TestForSure.entity.ViewReportQuestions;
+import edu.tests.TestForSure.response.AttemptedTestsResponse;
 import edu.tests.TestForSure.response.ViewReportResponse;
 
 @CrossOrigin
@@ -54,6 +55,19 @@ public class ViewReportServices {
 			System.out.println("Exception in service: "+e.getMessage());
 			response.setStatus(false);
 			response.setMessage(e.getMessage());
+		}
+		return response;
+	}
+	
+	@RequestMapping(method = {RequestMethod.GET}, value = "/get-attempted-tests")
+	public AttemptedTestsResponse getAttemptedTests( @RequestParam(value = "emailId", required = true) String emailId){
+		System.out.println("Calling get attempted tests service");
+		AttemptedTestsResponse response = new AttemptedTestsResponse();
+		try{
+			response = ViewReportDAO.getAttemptedTests(emailId);
+		}
+		catch(Exception e){
+			System.out.println("Exception in service: "+e.getMessage());
 		}
 		return response;
 	}
